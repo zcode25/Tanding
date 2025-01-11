@@ -59,6 +59,22 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="/superadminCategory" class="nav-link {{ Request::is('superadminCategory*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-database"></i>
+            <p>
+              Category
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/superadminAge" class="nav-link {{ Request::is('superadminAge*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-list-ol"></i>
+            <p>
+              Age Group
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="#" class="nav-link" id="logoutLink">
               <i class="far fa-solid fa-arrow-left nav-icon"></i>
               <p>Logout</p>

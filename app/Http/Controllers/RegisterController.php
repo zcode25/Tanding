@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Kontingen;
+use App\Models\Contingent;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -21,12 +21,11 @@ class RegisterController extends Controller
             'phone' => 'required|max:15',
             'address' => 'required|max:255',
             'password' => 'required|min:8|max:50',
-            'kontingen_name' => 'required',
+            'contingent_name' => 'required',
             'province' => 'required',
             'city' => 'required',
         ]);
-    
-        // Hash password sebelum menyimpan
+
         $validatedData['password'] = Hash::make($request['password']);
         $validatedData['role'] = 'User';
     
@@ -41,8 +40,8 @@ class RegisterController extends Controller
         ]);
     
         // Gunakan ID pengguna yang baru dibuat untuk menyimpan data kontingen
-        Kontingen::create([
-            'kontingen_name' => $validatedData['kontingen_name'],
+        Contingent::create([
+            'contingent_name' => $validatedData['contingent_name'],
             'user_id' => $user->id, // Ambil ID dari user yang baru saja dibuat
             'province' => $validatedData['province'],
             'city' => $validatedData['city'],

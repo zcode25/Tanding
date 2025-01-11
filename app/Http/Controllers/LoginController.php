@@ -29,9 +29,8 @@ class LoginController extends Controller
         }
 
         if (Auth::attempt(['email' =>  $credentials['email'], 'password' => $credentials['password'], 'role' => 'User'])) {
-            return 'user';
-            // $request->session()->regenerate();
-            // return redirect()->intended('/client/ticket');
+            $request->session()->regenerate();
+            return redirect()->intended('/userDashboard');
         }
 
         return back()->with([

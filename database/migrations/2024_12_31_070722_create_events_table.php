@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('event_id')->primary();
             $table->string('event_name');
             $table->string('event_desc');
+            $table->string('event_status');
             $table->timestamps();
             $table->softDeletes();
         });

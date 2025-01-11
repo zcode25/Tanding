@@ -58,15 +58,15 @@
                     </div>
                     <hr>
                     <div class="mb-3">
-                      <input type="text" class="form-control @error('kontingen_name') is-invalid @enderror" id="kontingen_name" placeholder="Kontingen Name" name="kontingen_name" autocomplete="off">
-                      @error('kontingen_name') 
+                      <input type="text" class="form-control @error('contingent_name') is-invalid @enderror" id="contingent_name" placeholder="contingent Name" name="contingent_name" autocomplete="off">
+                      @error('contingent_name') 
                         <div class="invalid-feedback">{{ $message }}</div>
                       @enderror
                     </div>
                     <div class="mb-3">
                       {{-- <label for="province" class="form-label">Province</label> --}}
                       <select class="form-select @error('province') is-invalid @enderror" id="province" name="province">
-                        <option value="" disabled selected>Select a Province Kontingen</option>
+                        <option value="" disabled selected>Select a Province Contingent</option>
                         <!-- Options akan diisi secara dinamis -->
                       </select>
                       @error('province') 
@@ -75,7 +75,7 @@
                     </div>
                     <div class="mb-3">
                       <select class="form-select @error('city') is-invalid @enderror" id="city" name="city">
-                        <option value="" disabled selected>Select a City Kontingen</option>
+                        <option value="" disabled selected>Select a City Contingent</option>
                         <!-- Options akan diisi secara dinamis -->
                       </select>
                       @error('city') 
@@ -121,7 +121,7 @@
             const provinceId = this.value;
 
             // Reset dropdown kota
-            citySelect.innerHTML = '<option value="" disabled selected>Select a City Kontingen</option>';
+            citySelect.innerHTML = '<option value="" disabled selected>Select a City Continget</option>';
 
             if (provinceId) {
                 // Load data kota berdasarkan ID provinsi

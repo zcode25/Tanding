@@ -12,4 +12,9 @@ class Document extends Model
     protected $primaryKey = 'document_id';
     public $incrementing = true;
     protected $keyType = 'string';
+
+    public function event()
+    {
+        return $this->belongsTo(Event::class, 'event_id');
+    }
 }

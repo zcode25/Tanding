@@ -71,7 +71,7 @@
   </nav>
   <!-- /.navbar -->
   
-  @include('partials.adminNav')
+  @include('partials.userNav')
   @yield('container')
 
   <!-- Main Footer -->

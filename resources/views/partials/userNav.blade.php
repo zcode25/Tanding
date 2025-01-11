@@ -35,7 +35,7 @@
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
-          <a href="/adminDashboard" class="nav-link {{ Request::is('adminDashboard*') ? 'active' : '' }}">
+          <a href="/userDashboard" class="nav-link {{ Request::is('userDashboard*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-tachometer-alt"></i>
             <p>
               Dashboard
@@ -43,7 +43,23 @@
           </a>
         </li>
         <li class="nav-item">
-          <a href="/adminEvent" class="nav-link {{ Request::is('adminEvent*') ? 'active' : '' }}">
+          <a href="/userContingent" class="nav-link {{ Request::is('userContingent*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-building"></i>
+            <p>
+              Contingent
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/userAthlete" class="nav-link {{ Request::is('userAthlete*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-users"></i>
+            <p>
+              Athlete
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/userEvent" class="nav-link {{ Request::is('userEvent*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-paper-plane"></i>
             <p>
               Event

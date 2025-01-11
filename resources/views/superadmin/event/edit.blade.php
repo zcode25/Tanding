@@ -43,6 +43,23 @@
                     @enderror
                   </div>
 
+                  <div class=" form-group">
+                    <label for="event_status" class="form-label">Event Status <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('event_status') is-invalid @enderror" id="event_status" name="event_status" data-placeholder="Select a Status">
+                      <option value=""></option>
+                      @foreach ($statuses as $status)
+                        @if (old('event_status', $event->event_status ?? '') == $status['status'])
+                          <option value="{{ $status['status'] }}" selected>{{ $status['status'] }}</option>
+                        @else
+                          <option value="{{ $status['status'] }}">{{ $status['status'] }}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                    @error('status') 
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">

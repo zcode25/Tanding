@@ -10,6 +10,8 @@ use App\Models\Information;
 use App\Models\Banner;
 use App\Models\Document;
 use App\Models\Competition;
+use App\Models\Category;
+use App\Models\Age;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -41,10 +43,10 @@ class EventController extends Controller
                 "status" => "Draft"
             ],
             [
-                "status" => "Open Registration"
+                "status" => "Publish"
             ],
             [
-                "status" => "Close Registration"
+                "status" => "Archive"
             ],
         ];
 
@@ -173,63 +175,25 @@ class EventController extends Controller
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
 
-        $competition_types = [
-            [
-                "type" => "Tanding"
-            ],
-            [
-                "type" => "Seni Tunggal"
-            ],
-            [
-                "type" => "Seni Berganda"
-            ],
-            [
-                "type" => "Seni Beregu"
-            ],
-        ];
-
-        $age_groups = [
-            [
-                "type" => "Usia Dini"
-            ],
-            [
-                "type" => "Pra Remaja"
-            ],
-            [
-                "type" => "Remaja"
-            ],
-            [
-                "type" => "Dewasa"
-            ],
-        ];
-
-        $genders = [
-            [
-                "type" => "Putra"
-            ],
-            [
-                "type" => "Putri"
-            ],
-        ];
-
+        $categories = Category::all();
+        $ages = Age::all();
         $competitions = Competition::where('event_id', $event->event_id)->get();
         
-
         return view('admin.event.competition.index', [
             'event' => $event,
-            'competition_types' => $competition_types,
-            'age_groups' => $age_groups,
-            'genders' => $genders,
+            'categories' => $categories,
+            'ages' => $ages,
             'competitions' => $competitions,
         ]);
     }
 
     public function competitionStore(Request $request) {
+        // dd($request);
+
         $validatedData = $request->validate([
             'event_id' => 'required',
-            'competition_type' => 'required',
-            'age_group' => 'required',
-            'gender' => 'required',
+            'category_id' => 'required',
+            'age_id' => 'required',
             'price' => 'required',
         ]);
 

@@ -40,8 +40,9 @@
             <thead>
             <tr>
               <th>Event Name</th>
-              <th>Date Created</th>
               <th>Event Description</th>
+              <th>Event Created</th>
+              <th>Event Status</th>
               <th>Action</th>
             </tr>
             </thead>
@@ -49,8 +50,9 @@
               @foreach ($events as $event)
                 <tr>
                   <td>{{ $event->event_name }}</td>
-                  <td>{{ $event->created_at->format('Y-m-d') }}</td>
                   <td>{{ $event->event_desc }}</td>
+                  <td>{{ $event->created_at->format('Y-m-d') }}</td>
+                  <td>{{ $event->event_status }}</td>
                   <td>
                       <a href="/superadminEvent/edit/{{ $event->event_id }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
                       <a href="/superadminEvent/detail/{{ $event->event_id }}" class="btn btn-dark btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>

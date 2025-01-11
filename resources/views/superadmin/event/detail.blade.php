@@ -33,6 +33,14 @@
                   <p class="mb-2 font-weight-bold">Event Description</p>
                   <p>{{ $event->event_desc }}</p>
                 </div>
+                <div class="mb-3">
+                  <p class="mb-2 font-weight-bold">Event Date</p>
+                  <p>{{ $event->created_at->format('Y-m-d') }}</p>
+                </div>
+                <div class="mb-3">
+                  <p class="mb-2 font-weight-bold">Event Status</p>
+                  <p>{{ $event->event_status }}</p>
+                </div>
               </div>
               <!-- /.card-body -->
           </div>

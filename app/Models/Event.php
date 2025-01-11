@@ -31,4 +31,9 @@ class Event extends Model
     {
         return $this->hasMany(Competition::class, 'event_id');
     }
+
+    public function documents()
+    {
+        return $this->hasMany(Document::class, 'event_id');
+    }
 }

@@ -30,6 +30,8 @@ class EventController extends Controller
             'event_desc' => 'required|max:255',
         ]);
 
+        $validatedData['event_status'] = 'Active';
+
         Event::create($validatedData);
 
         return redirect('/superadminEvent')->with('success', 'Data saved successfully');
@@ -37,8 +39,20 @@ class EventController extends Controller
     }
 
     public function edit(Event $event) {
+
+        $statuses = [
+            [
+                "status" => "Active"
+            ],
+            [
+                "status" => "Non Active"
+            ],
+
+        ];
+
         return view('superadmin.event.edit', [
-            'event' => $event
+            'event' => $event,
+            'statuses' => $statuses
         ]);
     }
 
@@ -47,6 +61,7 @@ class EventController extends Controller
         $validatedData = $request->validate([
             'event_name' => 'required|max:255',
             'event_desc' => 'required|max:255',
+            'event_status' => 'required',
         ]);
 
         Event::where('event_id', $event->event_id)->update($validatedData);

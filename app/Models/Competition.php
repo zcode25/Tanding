@@ -17,5 +17,15 @@ class Competition extends Model
     {
         return $this->belongsTo(Event::class, 'event_id');
     }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function age()
+    {
+        return $this->belongsTo(Age::class, 'age_id');
+    }
     
 }

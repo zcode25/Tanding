@@ -20,7 +20,7 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xl-8">
             <!-- Horizontal Form -->
 
             <div class="card">
@@ -34,14 +34,14 @@
                 <input type="hidden" id="event_id" name="event_id" value="{{ $event->event_id }}">
                 <div class="card-body">
                   <div class=" form-group">
-                    <label for="competition_type" class="form-label">Competition Type <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('competition_type') is-invalid @enderror" id="competition_type" name="competition_type" data-placeholder="Select a Competition Type">
+                    <label for="category_id" class="form-label">Competition Type <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('category_id') is-invalid @enderror" id="category_id" name="category_id" data-placeholder="Select a Competition Type">
                       <option value=""></option>
-                      @foreach ($competition_types as $competition_type)
-                        @if (old('competition_type') == $competition_type['type'])
-                          <option value="{{ $competition_type['type'] }}" selected>{{ $competition_type['type'] }}</option>
+                      @foreach ($categories as $category)
+                        @if (old('category_id') == $category->category_id)
+                          <option value="{{ $category->category_id }}" selected>{{ $category->category_name }} ({{ $category->category_type }} - {{ $category->category_amount }})</option>
                         @else
-                          <option value="{{ $competition_type['type'] }}">{{ $competition_type['type'] }}</option>
+                          <option value="{{ $category->category_id }}">{{ $category->category_name }} ({{ $category->category_type }} - {{ $category->category_amount }})</option>
                         @endif
                       @endforeach
                     </select>
@@ -51,35 +51,18 @@
                   </div>
 
                   <div class=" form-group">
-                    <label for="age_group" class="form-label">Age Group <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('age_group') is-invalid @enderror" id="age_group" name="age_group" data-placeholder="Select a Competition Type">
+                    <label for="age_id" class="form-label">Age Group <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('age_id') is-invalid @enderror" id="age_id" name="age_id" data-placeholder="Select a age group">
                       <option value=""></option>
-                      @foreach ($age_groups as $age_group)
-                        @if (old('age_group') == $age_group['type'])
-                          <option value="{{ $age_group['type'] }}" selected>{{ $age_group['type'] }}</option>
+                      @foreach ($ages as $age)
+                        @if (old('age_id') == $age->age_id)
+                          <option value="{{ $age->age_id }}" selected>{{ $age->age_name }}</option>
                         @else
-                          <option value="{{ $age_group['type'] }}">{{ $age_group['type'] }}</option>
+                          <option value="{{ $age->age_id }}">{{ $age->age_name }}</option>
                         @endif
                       @endforeach
                     </select>
                     @error('age_group') 
-                      <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                  </div>
-
-                  <div class=" form-group">
-                    <label for="gender" class="form-label">Gender <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('gender') is-invalid @enderror" id="gender" name="gender" data-placeholder="Select a Competition Type">
-                      <option value=""></option>
-                      @foreach ($genders as $gender)
-                        @if (old('gender') == $gender['type'])
-                          <option value="{{ $gender['type'] }}" selected>{{ $gender['type'] }}</option>
-                        @else
-                          <option value="{{ $gender['type'] }}">{{ $gender['type'] }}</option>
-                        @endif
-                      @endforeach
-                    </select>
-                    @error('gender') 
                       <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                   </div>
@@ -104,7 +87,6 @@
                         <th>No</th>
                         <th>Competition type</th>
                         <th>Age Group</th>
-                        <th>Gender</th>
                         <th>Price</th>
                         <th>Action</th>
                       </tr>
@@ -116,9 +98,8 @@
                       @foreach ($competitions as $competition)
                       <tr>
                         <td>{{ $i++ }}</td>
-                        <td>{{ $competition->competition_type }}</td>
-                        <td>{{ $competition->age_group }}</td>
-                        <td>{{ $competition->gender }}</td>
+                        <td>{{ $competition->category->category_name }} ({{ $competition->category->category_type }} - {{ $competition->category->category_amount }})</td>
+                        <td>{{ $competition->age->age_name }}</td>
                         <td>Rp {{ number_format($competition->price, 0, ',', '.') }}</td>
                         <td>
                           {{-- <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a> --}}

@@ -22,10 +22,10 @@
       <div class="container mx-auto px-6 py-4 flex justify-between items-center">
           <a href="#" class="text-2xl font-bold text-indigo-600">Tanding</a>
           <ul class="flex space-x-6 items-center">
-              <li><a href="#form" class="text-gray-700 hover:text-indigo-600">Daftar</a></li>
+              <li><a href="/login" class="text-gray-700 hover:text-indigo-600">Masuk</a></li>
               <li>
-                  <a href="/login" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
-                      Login
+                  <a href="/register" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700">
+                      Daftar
                   </a>
               </li>
           </ul>
@@ -41,9 +41,9 @@
           <p class="text-xl mt-7 text-gray-800 leading-normal">
               Bergabunglah dalam platform yang menyediakan informasi lengkap tentang kejuaraan olahraga beladiri. Temukan kompetisi sesuai bakatmu!
           </p>
-          <a href="#form"
+          <a href="/register"
               class="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition">
-              Lihat Jadwal dan Daftar
+              Daftar Kontingen Kamu Sekarang!
           </a>
       </div>
     </section>
@@ -65,6 +65,7 @@
         </div>
     </section>
 
+    @if (count($informations) > 0)
     <section class="py-16">
         <div class="container mx-auto">
             <h2 class="text-5xl font-semibold text-center leading-normal text-indigo-600 mb-5">Event Kejuaran Pencak Silat</h2>
@@ -72,61 +73,80 @@
             @foreach ($informations as $information)
               @php
                   $banner = $information->event->banners->first();
+                  $documents = $information->event->documents;
                   $competitions = $information->event->competitions;
               @endphp
-              <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 border-2 border-indigo-600 rounded-2xl p-5 mb-10">
-                  <div class="text-center">
-                      @if ($banner)
-                          <img class="w-full h-auto rounded-lg object-cover" src="{{ asset('storage/' . $banner->banner_img) }}" alt="{{ $information->title }}">
-                      @else
-                          <img class="w-full h-auto rounded-lg object-cover aspect-[16/9]" src="{{ asset('images/default-banner.jpg') }}" alt="Default Banner">
-                      @endif
-                  </div>
-                  <div class="flex items-center justify-center lg:text-left">
+              
+              <div class="border-2 border-indigo-600 rounded-2xl p-10 mb-10">
+                <h3 class="text-4xl font-semibold text-gray-800 leading-normal mb-5 text-center">{{ $information->title }}</h3>
+                <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                    <div class="mb-5">
                       <div class="mb-5">
-                          <h3 class="text-4xl font-semibold text-indigo-600 leading-normal">{{ $information->title }}</h3>
-                          <p class="text-gray-800 my-4">{!! $information->description !!}</p>
-                          <div class="mt-4">
-                            <h4 class="text-xl font-semibold text-gray-800 mb-3">Daftar Kompetisi</h4>
-                            <ul class="space-y-2 text-gray-800">
-                              @forelse ($competitions as $competition)
-                                  <li class="border p-4 rounded-lg">
-                                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                          <p class="mb-2">Jenis Kompetisi: <strong>{{ $competition->competition_type }}</strong></p>
-                                          <p class="mb-2">Kelompok Umur: <strong> {{ $competition->age_group }}</strong></p>
-                                      </div>
-                                      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                          <p class="mb-2">Gender:<strong> {{ $competition->gender }}</strong></p>
-                                          <p class="mb-2">Harga:<strong> Rp {{ number_format($competition->price, 0, ',', '.') }}</strong></p>
-                                      </div>
-                                  </li>
-                              @empty
-                                  <li class="text-gray-500">Tidak ada kompetisi terkait.</li>
-                              @endforelse
-                            </ul>
-                          </div>
-                          <div class="mt-4">
-                            <h4 class="text-xl font-semibold text-gray-800 mb-3">Tanggal Pendaftaran</h4>
-                            <ul class="space-y-2 text-gray-800">
-                                <li class="border p-4 rounded-lg">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
-                                        <p class="mb-2">Buka Pendaftaran: <strong> {{ $information->open_reg }} </strong></p>
-                                        <p class="mb-2"> Mulai Pertandingan:<strong> {{ $information->open_reg }} </strong></p>
-                                    </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <p class="mb-2">Tutup Pendaftaran:<strong> {{ $information->start_match }} </strong></p>
-                                        <p class="mb-2">Akhir Pertandingan:<strong> {{ $information->end_match }} </strong></p>
-                                    </div>
-                                </li>
-                            </ul>
-                          </div>
+                        @if ($banner)
+                            <img class="w-full h-auto rounded-lg" src="{{ asset('storage/' . $banner->banner_img) }}" alt="{{ $information->title }}">
+                        @else
+                            <img class="w-full h-auto rounded-lg" src="{{ asset('img/screen.jpg') }}" alt="Default Banner">
+                        @endif
                       </div>
-                  </div>
+                      <div>
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Informasi Event</h4>
+                        <p class="text-gray-800 mb-3">{!! $information->description !!}</p>
+
+                        <div class="mt-8">
+                          @foreach ($documents as $document)
+                            <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Unduh {{ $document->document_name }}</a>
+                          @endforeach
+                        </div>
+                       
+                      </div>
+                      <div class="mt-10">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Tanggal Pendaftaran</h4>
+                        <ul class="space-y-2 text-gray-800">
+                            <li class="border p-4 rounded-lg">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+                                    <p class="mb-2">Buka Pendaftaran: <strong> {{ $information->open_reg }} </strong></p>
+                                    <p class="mb-2"> Mulai Pertandingan:<strong> {{ $information->start_match}} </strong></p>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <p class="mb-2">Tutup Pendaftaran:<strong> {{ $information->close_reg }} </strong></p>
+                                    <p class="mb-2">Akhir Pertandingan:<strong> {{ $information->end_match }} </strong></p>
+                                </div>
+                            </li>
+                        </ul>
+                      </div>
+                    </div>                 
+                    <div>
+                        <div class="mb-5">
+                            <div class="mt-4">
+                              <h4 class="text-xl font-semibold text-gray-800 mb-3">Daftar Kompetisi</h4>
+                              <ul class="space-y-2 text-gray-800" id="competition-list">
+                                  @php
+                                      $groupedCompetitions = $competitions->groupBy('category_id');
+                                  @endphp
+                                  @forelse ($groupedCompetitions as $categoryId => $groupedCompetition)
+                                      <li class="border p-4 rounded-lg">
+                                          <p class="mb-2">Jenis Kompetisi: <strong>{{ $groupedCompetition->first()->category->category_name }}</strong></p>
+                                          <p class="mb-2">Kelompok Umur:</p>
+                                          <ul class="ml-4 list-disc">
+                                              @foreach ($groupedCompetition as $competition)
+                                                  <li><strong>{{ $competition->age->age_name }}</strong></li>
+                                              @endforeach
+                                          </ul>
+                                      </li>
+                                  @empty
+                                      <li class="text-gray-500">Tidak ada kompetisi terkait.</li>
+                                  @endforelse
+                              </ul>
+                          </div>  
+                        </div>
+                    </div>
+                </div>
               </div>
             @endforeach  
 
         </div>
     </section>
+    @endif
 
     <section class="py-16">
         <div class="container mx-auto">

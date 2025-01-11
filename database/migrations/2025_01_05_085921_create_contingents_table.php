@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kontingens', function (Blueprint $table) {
-            $table->id('kontingen_id')->primary();
+        Schema::create('contingents', function (Blueprint $table) {
+            $table->id('contingent_id')->primary();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('restrict');
-            $table->string('kontingen_name');
+            $table->string('contingent_name');
             $table->string('province');
             $table->string('city');
             $table->timestamps();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kontingens');
+        Schema::dropIfExists('contingents');
     }
 };

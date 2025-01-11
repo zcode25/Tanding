@@ -15,9 +15,10 @@ return new class extends Migration
             $table->id('competition_id')->primary();
             $table->unsignedBigInteger('event_id');
             $table->foreign('event_id')->references('event_id')->on('events')->onUpdate('cascade')->onDelete('restrict');
-            $table->string('competition_type');
-            $table->string('age_group');
-            $table->string('gender');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('category_id')->references('category_id')->on('categories')->onUpdate('cascade')->onDelete('restrict');
+            $table->unsignedBigInteger('age_id');
+            $table->foreign('age_id')->references('age_id')->on('ages')->onUpdate('cascade')->onDelete('restrict');
             $table->integer('price');
             $table->timestamps();
         });
