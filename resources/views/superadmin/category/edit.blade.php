@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Category</h1>
+            <h1>Pertandingan</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -21,7 +21,7 @@
             <!-- Horizontal Form -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Form Create Category</h3>
+                <h3 class="card-title">Data Pertandingan</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -29,15 +29,15 @@
                 @csrf
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="category_name" class="form-label">Category Name <span class="text-danger">*</span></label>
+                    <label for="category_name" class="form-label">Nama Pertandingan <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('category_name') is-invalid @enderror" id="category_name" name="category_name" value="{{ old('category_name', $category->category_name) }}">
                     @error('category_name') 
                       <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                   </div>
                   <div class=" form-group">
-                    <label for="category_type" class="form-label">Category Type <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('category_type') is-invalid @enderror" id="category_type" name="category_type" data-placeholder="Select a category type">
+                    <label for="category_type" class="form-label">Kategori Pertandingan <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('category_type') is-invalid @enderror" id="category_type" name="category_type" data-placeholder="Pilih Kategori Pertandingan">
                       <option value=""></option>
                       @foreach ($types as $type)
                         @if (old('type', $category->category_type) == $type['type'])
@@ -52,8 +52,8 @@
                     @enderror
                   </div>
                   <div class=" form-group">
-                    <label for="category_amount" class="form-label">Category Amount <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('category_amount') is-invalid @enderror" id="category_amount" name="category_amount" data-placeholder="Select a category amount">
+                    <label for="category_amount" class="form-label">Tipe Pertandingan <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('category_amount') is-invalid @enderror" id="category_amount" name="category_amount" data-placeholder="Pilih Tipe Pertandingan">
                       <option value=""></option>
                       @foreach ($amounts as $amount)
                         @if (old('category_amount', $category->category_amount) == $amount['type'])
@@ -67,12 +67,11 @@
                       <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                   </div>
-
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <a href="/superadminCategory" class="btn btn-default">Cancel</a>
-                  <button type="submit" name="submit" class="btn btn-primary float-right">Save</button>
+                  {{-- <a href="/superadminCategory" class="btn btn-default">Cancel</a> --}}
+                  <button type="submit" name="submit" class="btn btn-primary float-right">Simpan</button>
                 </div>
                 <!-- /.card-footer -->
               </form>

@@ -47,7 +47,7 @@ class RegisterController extends Controller
             'city' => $validatedData['city'],
         ]);
     
-        return redirect('/login')->with('success', 'Data saved successfully');
+        return redirect('/login')->with('success', 'Data Berhasil Disimpan');
     }
     
 }

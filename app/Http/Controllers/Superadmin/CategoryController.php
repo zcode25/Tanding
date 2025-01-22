@@ -57,7 +57,7 @@ class CategoryController extends Controller
 
         Category::create($validatedData);
 
-        return redirect('/superadminCategory')->with('success', 'Data saved successfully');
+        return redirect('/superadminCategory')->with('success', 'Data Berhasil Disimpan');
     }
 
     public function edit(Category $category) {
@@ -100,7 +100,7 @@ class CategoryController extends Controller
 
         Category::where('category_id', $category->category_id)->update($validatedData);
 
-        return redirect('/superadminCategory')->with('success', 'Data updated successfully');        
+        return redirect('/superadminCategory')->with('success', 'Data Berhasil Disimpan');        
     }
 
     public function destroy(Category $category) {
@@ -113,6 +113,6 @@ class CategoryController extends Controller
             ]);
         }
 
-        return redirect('/superadminCategory')->with('success', 'Data deleted successfully');  
+        return redirect('/superadminCategory')->with('success', 'Data Berhasil Dihapus');  
     }
 }

@@ -28,8 +28,18 @@ class Register extends Model
         return $this->belongsTo(Matchclass::class, 'class_id');
     }
 
+    public function contingent()
+    {
+        return $this->belongsTo(contingent::class, 'contingent_id');
+    }
+    
     public function athletes()
     {
         return $this->belongsToMany(Athlete::class, 'registerathletes', 'register_id', 'athlete_id');
+    }
+
+    public function registerAthletes()
+    {
+        return $this->hasMany(RegisterAthlete::class, 'register_id', 'register_id');
     }
 }

@@ -12,6 +12,8 @@ use App\Models\Category;
 use App\Models\Athlete;
 use App\Models\Contingent;
 use App\Models\Register;
+use App\Models\Payment;
+use App\Models\Paymentmethod;
 use App\Models\Registerathlete;
 use Illuminate\Validation\Rule;
 
@@ -28,7 +30,11 @@ class EventController extends Controller
 
     public function register(Event $event) {
 
-        $informations = Information::where('event_id', $event->event_id)->with(['event.banners', 'event.competitions', 'event.documents'])->get();
+        $title = 'Delete Data!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+
+        $information = Information::where('event_id', $event->event_id)->first();
 
         $competitions = Competition::where('event_id', $event->event_id)->get();
         $groupedCompetitions = $competitions->groupBy('category_id');
@@ -40,19 +46,29 @@ class EventController extends Controller
 
         $registers = Register::with(['category', 'age', 'matchClass', 'athletes'])
         ->where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->get();
+
+        $totalPrice = Register::where('event_id', $event->event_id)
         ->whereHas('athletes', function ($query) use ($contingent_id) {
             $query->where('contingent_id', $contingent_id);
         })
-        ->get();
+        ->sum('price');
 
-        // dd($registers);
+        $payment = Payment::where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->first();
+
 
         return view('user.event.register', [
-            'informations' => $informations,
+            'information' => $information,
             'groupedCompetitions' => $groupedCompetitions,
             'athletes' => $athletes,
             'event' => $event,
             'registers' => $registers,
+            'totalPrice' => $totalPrice,
+            'contingent' => $contingent,
+            'payment' => $payment,
         ]);
     }
 
@@ -134,19 +150,103 @@ class EventController extends Controller
         if($category->category_amount == 'Single') {
             if($validatedData['athlete_id'][0] == null) {
                 return back()->with([
-                    'error' => 'Athlete belum dimasukan',
+                    'error' => 'Atlet belum dimasukan',
                 ]);
             }
+
+            $athlete_id = $validatedData['athlete_id'][0];
+            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
+
+            if($validatedData['age_id'] != $athlete->age_id) {
+                return back()->with([
+                    'error' => 'Atlet kategori umur tidak sesuai',
+                ]);
+            } 
+
+            if(isset($validatedData['class_id'])) {
+
+                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
+               
+                if($class->class_gender != $athlete->athlete_gender) {
+                    return back()->with([
+                        'error' => 'Jenis kelamin Atlet tidak sesuai',
+                    ]);
+                } 
+
+                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
+                    return back()->with([
+                        'error' => 'Berat atlet tidak sesuai dengan kelas',
+                    ]);
+                }
+
+            }
+
+
         } else if ($category->category_amount == 'Double') {
             if($validatedData['athlete_id'][0] == null) {
                 return back()->with([
                     'error' => 'Athlete belum dimasukan',
                 ]);
             }
+
+            $athlete_id = $validatedData['athlete_id'][0];
+            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
+
+            if($validatedData['age_id'] != $athlete->age_id) {
+                return back()->with([
+                    'error' => 'Atlet kategori umur tidak sesuai',
+                ]);
+            } 
+
+            if(isset($validatedData['class_id'])) {
+
+                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
+               
+                if($class->class_gender != $athlete->athlete_gender) {
+                    return back()->with([
+                        'error' => 'Jenis kelamin Atlet tidak sesuai',
+                    ]);
+                } 
+
+                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
+                    return back()->with([
+                        'error' => 'Berat atlet tidak sesuai dengan kelas',
+                    ]);
+                }
+
+            }
+
             if($validatedData['athlete_id'][1] == null) {
                 return back()->with([
                     'error' => 'Athlete belum dimasukan',
                 ]);
+            }
+
+            $athlete_id = $validatedData['athlete_id'][1];
+            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
+
+            if($validatedData['age_id'] != $athlete->age_id) {
+                return back()->with([
+                    'error' => 'Atlet kategori umur tidak sesuai',
+                ]);
+            } 
+
+            if(isset($validatedData['class_id'])) {
+
+                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
+               
+                if($class->class_gender != $athlete->athlete_gender) {
+                    return back()->with([
+                        'error' => 'Jenis kelamin Atlet tidak sesuai',
+                    ]);
+                } 
+
+                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
+                    return back()->with([
+                        'error' => 'Berat atlet tidak sesuai dengan kelas',
+                    ]);
+                }
+
             }
         } else if ($category->category_amount == 'Group') {
             if($validatedData['athlete_id'][0] == null) {
@@ -154,19 +254,111 @@ class EventController extends Controller
                     'error' => 'Athlete belum dimasukan',
                 ]);
             }
+
+            $athlete_id = $validatedData['athlete_id'][0];
+            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
+
+            if($validatedData['age_id'] != $athlete->age_id) {
+                return back()->with([
+                    'error' => 'Atlet kategori umur tidak sesuai',
+                ]);
+            } 
+
+            if(isset($validatedData['class_id'])) {
+
+                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
+               
+                if($class->class_gender != $athlete->athlete_gender) {
+                    return back()->with([
+                        'error' => 'Jenis kelamin Atlet tidak sesuai',
+                    ]);
+                } 
+
+                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
+                    return back()->with([
+                        'error' => 'Berat atlet tidak sesuai dengan kelas',
+                    ]);
+                }
+
+            }
+
             if($validatedData['athlete_id'][1] == null) {
                 return back()->with([
                     'error' => 'Athlete belum dimasukan',
-                ]);
+                ]);    
             }
+
+            $athlete_id = $validatedData['athlete_id'][1];
+            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
+
+            if($validatedData['age_id'] != $athlete->age_id) {
+                return back()->with([
+                    'error' => 'Atlet kategori umur tidak sesuai',
+                ]);
+            } 
+
+            if(isset($validatedData['class_id'])) {
+
+                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
+            
+                if($class->class_gender != $athlete->athlete_gender) {
+                    return back()->with([
+                        'error' => 'Jenis kelamin Atlet tidak sesuai',
+                    ]);
+                } 
+
+                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
+                    return back()->with([
+                        'error' => 'Berat atlet tidak sesuai dengan kelas',
+                    ]);
+                }
+
+            }
+
+
             if($validatedData['athlete_id'][2] == null) {
                 return back()->with([
                     'error' => 'Athlete belum dimasukan',
                 ]);
+
+            }
+
+            $athlete_id = $validatedData['athlete_id'][2];
+            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
+
+            if($validatedData['age_id'] != $athlete->age_id) {
+                return back()->with([
+                    'error' => 'Atlet kategori umur tidak sesuai',
+                ]);
+            } 
+
+            if(isset($validatedData['class_id'])) {
+
+                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
+            
+                if($class->class_gender != $athlete->athlete_gender) {
+                    return back()->with([
+                        'error' => 'Jenis kelamin Atlet tidak sesuai',
+                    ]);
+                } 
+
+                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
+                    return back()->with([
+                        'error' => 'Berat atlet tidak sesuai dengan kelas',
+                    ]);
+                }
+
             }
         }
 
+
+        
+
         $competition = Competition::where('event_id', $validatedData['event_id'])->where('age_id', $validatedData['age_id'])->first();
+
+        $status = 'Register';
+        $contingent = Contingent::where('user_id', auth()->user()->id)->first();
+        $contingent_id = $contingent->contingent_id;
 
 
         if(isset($validatedData['class_id'])) {
@@ -175,17 +367,20 @@ class EventController extends Controller
                 'category_id' => $validatedData['category_id'],
                 'age_id' => $validatedData['age_id'],
                 'class_id' => $validatedData['class_id'],
-                'price' => $competition->price
+                'contingent_id' => $contingent_id,
+                'price' => $competition->price,
+                'status' => $status
             ]);
         } else {
             $register = Register::create([
                 'event_id' => $validatedData['event_id'],
                 'category_id' => $validatedData['category_id'],
                 'age_id' => $validatedData['age_id'],
-                'price' => $competition->price
+                'contingent_id' => $contingent_id,
+                'price' => $competition->price,
+                'status' => $status
             ]);
         }
-
 
         foreach ($validatedData['athlete_id'] as $athleteId) {
             if ($athleteId) { 
@@ -196,6 +391,109 @@ class EventController extends Controller
             }
         }
 
-        return back()->with('success', 'Data saved successfully');
+        return back()->with('success', 'Data Berhasil Disimpan');
+    }
+
+    public function registerDestroy(Register $register) {
+        
+        try{
+            Registerathlete::where('register_id', $register->register_id)->delete();
+            Register::where('register_id', $register->register_id)->delete();       
+        } catch (\Illuminate\Database\QueryException){
+            return back()->with([
+                'error' => 'Data cannot be deleted, because the data is still needed!',
+            ]);
+        }
+
+        return back()->with('success', 'Data Berhasil Dihapus');
+    } 
+
+    public function registerPayment(Event $event) {
+
+        $information = Information::where('event_id', $event->event_id)->first();
+        $contingent = Contingent::where('user_id', auth()->user()->id)->first();
+        $contingent_id = $contingent->contingent_id;
+
+        $registers = Register::with(['category', 'age', 'matchClass', 'athletes'])
+        ->where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->get();
+
+        $amountRegisters = Register::where('event_id', $event->event_id)->where('status', 'Payment')->orWhere('status', 'Match')->count();
+        $amountMatchRegisters = Register::where('event_id', $event->event_id)->where('status', 'Match')->count();
+
+        $quota = $information->quota;
+        $countRegister = count($registers);
+        $totalRegister = $amountRegisters + $countRegister;
+
+        $totalPrice = Register::where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->sum('price');
+
+        $payment = Payment::where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->first();
+
+        if (!isset($payment)) {
+            if($amountMatchRegisters == $quota) {
+                return redirect()->back()->withErrors([
+                    'message' => "Kuota telah penuh"
+                ]);
+            } else if ($totalRegister > $quota) {
+                $excess = $totalRegister - $quota;
+                return redirect()->back()->withErrors([
+                    'message' => "Kuota telah terlampaui sebanyak $excess registrasi"
+                ]);
+            }
+        }
+
+        $paymentmethods = Paymentmethod::all();
+
+        $uniqueCode = ($contingent_id + 111) % 1000;
+        $totalPayment = $totalPrice + $uniqueCode;
+
+        return view('user.event.payment', [
+            'event' => $event,
+            'information' => $information,
+            'contingent' => $contingent,
+            'registers' => $registers,
+            'totalPrice' => $totalPrice,
+            'uniqueCode' => $uniqueCode,
+            'totalPayment' => $totalPayment,
+            'payment' => $payment,
+            'paymentmethods' => $paymentmethods,
+        ]);
+    }
+
+    public function registerPaymentStore(Request $request, Event $event) {
+
+        // dd($request);
+
+        $validatedData = $request->validate([
+            'event_id' => 'required',
+            'contingent_id' => 'required',
+            'amount' => 'required',
+            'status' => 'required',
+            'paymentmethod_id' => 'required',
+            'payment_proof' => 'required|file|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        if($request->file('payment_proof')) {
+            $validatedData['payment_proof'] = $request->file('payment_proof')->store('payment_proof');
+        }
+
+        Payment::create($validatedData);
+
+        $contingent = Contingent::where('user_id', auth()->user()->id)->first();
+        $contingent_id = $contingent->contingent_id;
+
+        Register::where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->update([
+            'status' => 'Payment'
+        ]);
+
+        return back()->with('success', 'Data Berhasil Disimpan');
+
     }
 }

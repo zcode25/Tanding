@@ -7,7 +7,8 @@
   <title>Tanding</title>
 
   <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  {{-- <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"> --}}
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   {{-- <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css"> --}}
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -43,7 +44,11 @@
 
   {{-- <script src="https://cdn.printjs.crabbly.com/print.min.js"></script> --}}
 
-
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

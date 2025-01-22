@@ -47,7 +47,7 @@
           <a href="/adminEvent/detail/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/detail*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-paper-plane"></i>
             <p>
-              Event Detail
+              Detail Perlombaan
             </p>
           </a>
         </li>
@@ -56,7 +56,7 @@
           <a href="#" class="nav-link {{ Request::is('adminEvent/information*', 'adminEvent/document*', 'adminEvent/competition*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-file"></i>
             <p>
-              Event Information
+              Info Perlombaan
               <i class="right fas fa fa-angle-left"></i>
             </p>
           </a>
@@ -65,30 +65,67 @@
             <li class="nav-item">
               <a href="/adminEvent/information/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/information*') ? 'active' : '' }}">
                 <i class="far fa-solid fa-info nav-icon"></i>
-                <p>Information</p>
+                <p>Informasi</p>
               </a>
             </li>
 
             <li class="nav-item">
               <a href="/adminEvent/document/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/document*') ? 'active' : '' }}">
                 <i class="far fa-solid fa-folder nav-icon"></i>
-                <p>Document</p>
+                <p>Dokumen</p>
               </a>
             </li>
 
             <li class="nav-item">
               <a href="/adminEvent/competition/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/competition*') ? 'active' : '' }}">
                 <i class="far fa-solid fa-list nav-icon"></i>
-                <p>Competition</p>
+                <p>Kompetisi</p>
               </a>
             </li>
 
           </ul>
         </li>
+
+        <li class="nav-item">
+          <a href="/adminPayment/{{ $event->event_id }}" class="nav-link {{ Request::is('adminPayment*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-credit-card-alt""></i>
+            <p>
+              Pembayaran
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/adminRegister/{{ $event->event_id }}" class="nav-link {{ Request::is('adminRegister*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-user""></i>
+            <p>
+              Daftar Peserta
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/adminDraw/{{ $event->event_id }}" class="nav-link {{ Request::is('adminDraw*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-random""></i>
+            <p>
+              Pengundian
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/adminMatch/{{ $event->event_id }}" class="nav-link {{ Request::is('adminMatch*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-bolt""></i>
+            <p>
+              Pertandingan
+            </p>
+          </a>
+        </li>
+
         <li class="nav-item">
           <a href="/adminEvent" class="nav-link">
               <i class="far fa-solid fa-arrow-left nav-icon"></i>
-              <p>Back</p>
+              <p>Kembali</p>
           </a>
         </li>
         {{-- <li class="nav-item">
@@ -114,22 +151,3 @@
 </aside>
 <!-- /.control-sidebar -->
 
-<script>
-  document.getElementById('logoutLink').addEventListener('click', function(event) {
-      event.preventDefault(); // Menghentikan link agar tidak langsung terjadi redirect
-
-      Swal.fire({
-          title: 'Are you sure?',
-          text: "You will be logged out.",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, log me out!'
-      }).then((result) => {
-          if (result.isConfirmed) {
-              window.location.href = '/logout'; // Redirect ke URL logout
-          }
-      });
-  });
-</script>

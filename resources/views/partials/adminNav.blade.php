@@ -38,7 +38,7 @@
           <a href="/adminDashboard" class="nav-link {{ Request::is('adminDashboard*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-tachometer-alt"></i>
             <p>
-              Dashboard
+              Halaman Utama
             </p>
           </a>
         </li>
@@ -46,7 +46,15 @@
           <a href="/adminEvent" class="nav-link {{ Request::is('adminEvent*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-paper-plane"></i>
             <p>
-              Event
+              Perlombaan
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/adminAccount/{{ auth()->user()->id }}" class="nav-link {{ Request::is('adminAccount*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-id-card"></i>
+            <p>
+              Akun Saya
             </p>
           </a>
         </li>
@@ -78,13 +86,14 @@
       event.preventDefault(); // Menghentikan link agar tidak langsung terjadi redirect
 
       Swal.fire({
-          title: 'Are you sure?',
-          text: "You will be logged out.",
+          title: 'Apakah kamu yakin?',
+          text: "Kamu akan keluar dari sistem.",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, log me out!'
+          confirmButtonText: 'Ya, keluar dari sistem!',
+          cancelButtonText: 'Batal'
       }).then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/logout'; // Redirect ke URL logout

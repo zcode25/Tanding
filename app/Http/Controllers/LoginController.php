@@ -34,7 +34,7 @@ class LoginController extends Controller
         }
 
         return back()->with([
-            'loginError' => 'Login field!',
+            'error' => 'Alamat email atau kata sandi tidak sesuai!',
         ]);
 
     }

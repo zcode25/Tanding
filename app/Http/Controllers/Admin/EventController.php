@@ -73,6 +73,7 @@ class EventController extends Controller
             'close_reg' => 'required',
             'start_match' => 'required',
             'end_match' => 'required',
+            'quota' => 'required',
             'status' => 'required',
         ]);
 
@@ -85,7 +86,7 @@ class EventController extends Controller
             Information::create($validatedData);
         }
 
-        return back()->with('success', 'Data saved successfully');
+        return back()->with('success', 'Data Berhasil Disimpan');
     }
 
 
@@ -102,7 +103,7 @@ class EventController extends Controller
 
         Banner::create($validatedData);
 
-        return back()->with('success', 'Data saved successfully');
+        return back()->with('success', 'Data Berhasil Disimpan');
     }
 
     public function bannerDestroy(Banner $banner) {
@@ -114,11 +115,11 @@ class EventController extends Controller
             Banner::where('banner_id', $banner->banner_id)->delete();
         } catch (\Illuminate\Database\QueryException){
             return back()->with([
-                'error' => 'Data cannot be deleted, because the data is still needed!',
+                'error' => 'Data tidak dapat dihapus, karena data masih diperlukan!',
             ]);
         }
 
-        return back()->with('success', 'Data deleted successfully');
+        return back()->with('success', 'Data Berhasil Dihapus');
     }
 
     public function document(Event $event) {
@@ -149,7 +150,7 @@ class EventController extends Controller
 
         Document::create($validatedData);
 
-        return back()->with('success', 'Data saved successfully');
+        return back()->with('success', 'Data Berhasil Disimpan');
 
     }
 
@@ -166,7 +167,7 @@ class EventController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Data deleted successfully');
+        return back()->with('success', 'Data Berhasil Dihapus');
     }
 
     public function competition(Event $event) {
@@ -199,7 +200,7 @@ class EventController extends Controller
 
         Competition::create($validatedData);
 
-        return back()->with('success', 'Data saved successfully');
+        return back()->with('success', 'Data Berhasil Disimpan');
     }
 
 
@@ -213,7 +214,7 @@ class EventController extends Controller
             ]);
         }
 
-        return back()->with('success', 'Data deleted successfully');
+        return back()->with('success', 'Data Berhasil Dihapus');
     }
 
 

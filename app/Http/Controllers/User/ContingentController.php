@@ -48,7 +48,7 @@ class ContingentController extends Controller
 
         Contingent::where('user_id', $contingent->user_id)->update($validatedData);
 
-        return back()->with('success', 'Data updated successfully');
+        return back()->with('success', 'Data Berhasil Disimpan');
 
     }
 
@@ -66,8 +66,21 @@ class ContingentController extends Controller
 
         User::where('id', $user->id)->update($validatedData);
 
-        return  back()->with('success', 'Data updated successfully');
+        return  back()->with('success', 'Data Berhasil Disimpan');
 
+    }
+
+    public function resetPassword(Request $request, User $user) {
+
+        $validatedData = $request->validate([
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $validatedData['password'] = bcrypt($request->password);
+        
+        User::where('id', $user->id)->update($validatedData);
+
+        return redirect()->back()->with('success', 'Kata sandi berhasil diubah');
     }
 
 }

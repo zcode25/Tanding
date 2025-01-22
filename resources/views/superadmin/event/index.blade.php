@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Event</h1>
+            <h1>Perlombaan</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
               
-              <a href="/superadminEvent/create" class="btn btn-primary">Create New</a>
+              <a href="/superadminEvent/create" class="btn btn-primary">Tambah Data<i class="fa fa-plus ml-2" aria-hidden="true"></i></a>
         
             </div>
           </div>
@@ -27,7 +27,7 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Event List</h3>
+          <h3 class="card-title">Daftar Perlombaan</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -39,11 +39,11 @@
           <table id="example1" class="table table-hover">
             <thead>
             <tr>
-              <th>Event Name</th>
-              <th>Event Description</th>
-              <th>Event Created</th>
-              <th>Event Status</th>
-              <th>Action</th>
+              <th>Nama Perlombaan</th>
+              <th>Deskripsi</th>
+              <th>Tanggal Dibuat</th>
+              <th>Status</th>
+              <th>Aksi</th>
             </tr>
             </thead>
             <tbody>
@@ -54,8 +54,8 @@
                   <td>{{ $event->created_at->format('Y-m-d') }}</td>
                   <td>{{ $event->event_status }}</td>
                   <td>
-                      <a href="/superadminEvent/edit/{{ $event->event_id }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                      <a href="/superadminEvent/detail/{{ $event->event_id }}" class="btn btn-dark btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></a>
+                      <a href="/superadminEvent/edit/{{ $event->event_id }}" class="btn btn-primary btn-sm">Ubah<i class="fa fa-pencil ml-2" aria-hidden="true"></i></a>
+                      <a href="/superadminEvent/detail/{{ $event->event_id }}" class="btn btn-dark btn-sm">Detail<i class="fa fa-eye ml-2" aria-hidden="true"></i></a>
                   </td>
                 </tr>
               @endforeach

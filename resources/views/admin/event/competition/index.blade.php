@@ -10,7 +10,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Event Information</h1>
+            <h1 class="m-0">Kompetisi</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -20,12 +20,12 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-xl-8">
+        <div class="col-xl-4">
             <!-- Horizontal Form -->
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Form Competition Event</h3>
+                <h3 class="card-title">Data Pertandingan</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -34,8 +34,8 @@
                 <input type="hidden" id="event_id" name="event_id" value="{{ $event->event_id }}">
                 <div class="card-body">
                   <div class=" form-group">
-                    <label for="category_id" class="form-label">Competition Type <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('category_id') is-invalid @enderror" id="category_id" name="category_id" data-placeholder="Select a Competition Type">
+                    <label for="category_id" class="form-label">Kategori Pertandingan <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('category_id') is-invalid @enderror" id="category_id" name="category_id" data-placeholder="Pilih Kategori Pertandingan">
                       <option value=""></option>
                       @foreach ($categories as $category)
                         @if (old('category_id') == $category->category_id)
@@ -51,8 +51,8 @@
                   </div>
 
                   <div class=" form-group">
-                    <label for="age_id" class="form-label">Age Group <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4 @error('age_id') is-invalid @enderror" id="age_id" name="age_id" data-placeholder="Select a age group">
+                    <label for="age_id" class="form-label">Kategori Umur <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('age_id') is-invalid @enderror" id="age_id" name="age_id" data-placeholder="Pilih Kategori Umur">
                       <option value=""></option>
                       @foreach ($ages as $age)
                         @if (old('age_id') == $age->age_id)
@@ -68,7 +68,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label for="price" class="form-label">Price <span class="text-danger">*</span></label>
+                    <label for="price" class="form-label">Harga <span class="text-danger">*</span></label>
                     <input type="number" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}">
                     @error('price') 
                       <div class="invalid-feedback">{{ $message }}</div>
@@ -76,41 +76,10 @@
                   </div>
 
                   <div class="d-grid gap-2">
-                    <button type="submit" name="submit" class="btn btn-primary btn-block">Add</button>
+                    <button type="submit" name="submit" class="btn btn-primary btn-block">Tambah</button>
                   </div>
 
-                  <hr>
 
-                  <table class="table table-sm">
-                    <thead>
-                      <tr>
-                        <th>No</th>
-                        <th>Competition type</th>
-                        <th>Age Group</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      @php
-                          $i = 1;
-                      @endphp
-                      @foreach ($competitions as $competition)
-                      <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $competition->category->category_name }} ({{ $competition->category->category_type }} - {{ $competition->category->category_amount }})</td>
-                        <td>{{ $competition->age->age_name }}</td>
-                        <td>Rp {{ number_format($competition->price, 0, ',', '.') }}</td>
-                        <td>
-                          {{-- <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a> --}}
-                          <a href="/adminEvent/competition/destroy/{{ $competition->competition_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                        </td>
-                      </tr>
-                      @endforeach
-                    </tbody>
-                  </table>
-    
-                  
                 </div>
                 <!-- /.card-body -->
                 {{-- <div class="card-footer">
@@ -120,6 +89,51 @@
               </form>
             </div>
             <!-- /.card -->
+        </div>
+        <div class="col-xl-8">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Daftar Perlombaan</h3>
+    
+              <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                  <i class="fas fa-minus"></i>
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <table id="example1" class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Kategori Pertandingan</th>
+                    <th>Kategori Umur</th>
+                    <th>Harga</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @php
+                      $i = 1;
+                  @endphp
+                  @foreach ($competitions as $competition)
+                  <tr>
+                    <td>{{ $i++ }}</td>
+                    <td>{{ $competition->category->category_name }} ({{ $competition->category->category_type }} - {{ $competition->category->category_amount }})</td>
+                    <td>{{ $competition->age->age_name }}</td>
+                    <td>Rp {{ number_format($competition->price, 0, ',', '.') }}</td>
+                    <td>
+                      {{-- <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a> --}}
+                      <a href="/adminEvent/competition/destroy/{{ $competition->competition_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus<i class="fa fa-trash ml-2" aria-hidden="true"></i></a>
+                    </td>
+                  </tr>
+                  @endforeach
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          
         </div>
       </div>
 

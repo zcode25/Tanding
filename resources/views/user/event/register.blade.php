@@ -7,14 +7,14 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Event</h1>
+          <div class="col-sm-12">
+            <h1>Perlombaan - {{ $information->title }}</h1>
           </div>
-          <div class="col-sm-6">
+          {{-- <div class="col-sm-6">
             <div class="float-sm-right">
 
             </div>
-          </div>
+          </div> --}}
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -23,47 +23,13 @@
     <section class="content">
 
       <!-- Default box -->
-      {{-- <div class="row">
-        @foreach ($informations as $information)
-        @php
-            $banner = $information->event->banners->first();
-            $documents = $information->event->documents;
-            $competitions = $information->event->competitions;
-        @endphp
-        <div class="col-xl-12">
-          <div class="card mb-3">
-            <div class="row no-gutters">
-              <div class="col-md-2">
-                @if ($banner)
-                    <img class="img-fluid" src="{{ asset('storage/' . $banner->banner_img) }}" alt="{{ $information->title }}">
-                @else
-                    <img class="img-fluid" src="{{ asset('img/screen.jpg') }}" alt="Default Banner">
-                @endif
-              </div>
-              <div class="col-md-10">
-                <div class="card-body">
-                  <h2 class="mb-3 font-weight-bold">{{ $information->title }}</h2>
-                  <p class="card-text text-md">{!! $information->description !!}</p>
-                  <div class="mt-8">
-                    @foreach ($documents as $document)
-                      <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-dark">Unduh {{ $document->document_name }}</a>
-                    @endforeach
-                  </div>
-
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        @endforeach
-        
-      </div> --}}
-
+      
+      @if (!isset($payment->status))
       <div class="row">
         <div class="col">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Form Register Athlete</h3>
+              <h3 class="card-title">Pendaftaran Atlet</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -74,9 +40,9 @@
                 <div class="row">
                   <div class="col-xl-6">
                     <div class="form-group">
-                      <label for="category_id" class="form-label">Competition Type</label>
+                      <label for="category_id" class="form-label">Kategori Pertandingan <span class="text-danger">*</span></label>
                       <select id="category_id" class="form-control @error('category_id') is-invalid @enderror" name="category_id">
-                          <option value="" disabled selected>Select a Competition Type</option>
+                          <option value="" disabled selected>Pilih Kategori Pertandingan</option>
                           @foreach ($groupedCompetitions as $groupedCompetition)
                             <option 
                               value="{{ $groupedCompetition->first()->category->category_id }}" 
@@ -92,9 +58,9 @@
                     <p id="selectedCategoryId" class="d-none"></p>
 
                     <div class="form-group">
-                      <label for="age_id" class="form-label">Age Group <span class="text-danger">*</span></label>
+                      <label for="age_id" class="form-label">Kategori Umur <span class="text-danger">*</span></label>
                       <select class="form-control @error('age_id') is-invalid @enderror" id="age_id" name="age_id">
-                        <option value="" disabled selected>Select a Age Group</option>
+                        <option value="" disabled selected>Pilih Kategori Umur</option>
                       </select>
                       @error('age_id') 
                           <div class="invalid-feedback">{{ $message }}</div>
@@ -104,9 +70,9 @@
                     <p id="selectedAgeId" class="d-none"></p>
     
                     <div id="classDropdownContainer" class="form-group d-none">
-                      <label for="class_id" class="form-label">Class Group <span class="text-danger">*</span></label>
+                      <label for="class_id" class="form-label">Kelas <span class="text-danger">*</span></label>
                       <select class="form-control @error('class_id') is-invalid @enderror" id="class_id" name="class_id">
-                        <option value="" disabled selected>Select a Class Group</option>
+                        <option value="" disabled selected>Pilih Kelas</option>
                       </select>
                       @error('class_id') 
                           <div class="invalid-feedback">{{ $message }}</div>
@@ -116,14 +82,14 @@
                   <div class="col-xl-6">
                     <div id="athlete-forms">
                       <div class="form-group athlete-form" id="athlete-form-1" style="display: none;">
-                          <label for="athlete_id_1" class="form-label">Athlete 1 <span class="text-danger">*</span></label>
-                          <select class="form-control select2bs4 @error('athlete_id') is-invalid @enderror" id="athlete_id_1" name="athlete_id[]" data-placeholder="Select an athlete">
+                          <label for="athlete_id_1" class="form-label">Atlet 1 <span class="text-danger">*</span></label>
+                          <select class="form-control select2bs4 @error('athlete_id') is-invalid @enderror" id="athlete_id_1" name="athlete_id[]" data-placeholder="Pilih Atlet">
                             <option value=""></option>
                             @foreach ($athletes as $athlete)
                               @if (old('athlete_id_1') == $athlete->athlete_id)
-                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
                               @else
-                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
                               @endif
                             @endforeach
                           </select>
@@ -133,14 +99,14 @@
                       </div>
                   
                       <div class="form-group athlete-form" id="athlete-form-2" style="display: none;">
-                          <label for="athlete_id_2" class="form-label">Athlete 2 <span class="text-danger">*</span></label>
-                          <select class="form-control  select2bs4 @error('athlete_id') is-invalid @enderror" id="athlete_id_2" name="athlete_id[]" data-placeholder="Select an athlete">
+                          <label for="athlete_id_2" class="form-label">Atlet 2 <span class="text-danger">*</span></label>
+                          <select class="form-control  select2bs4 @error('athlete_id') is-invalid @enderror" id="athlete_id_2" name="athlete_id[]" data-placeholder="Pilih Atlet">
                             <option value=""></option>
                             @foreach ($athletes as $athlete)
                               @if (old('athlete_id_2') == $athlete->athlete_id)
-                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
                               @else
-                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
                               @endif
                             @endforeach
                           </select>
@@ -150,14 +116,14 @@
                       </div>
                   
                       <div class="form-group athlete-form" id="athlete-form-3" style="display: none;">
-                          <label for="athlete_id_3" class="form-label">Athlete 3 <span class="text-danger">*</span></label>
-                          <select class="form-control  select2bs4 @error('athlete_id') is-invalid @enderror" id="athlete_id_3" name="athlete_id[]" data-placeholder="Select an athlete">
+                          <label for="athlete_id_3" class="form-label">Atlet 3 <span class="text-danger">*</span></label>
+                          <select class="form-control  select2bs4 @error('athlete_id') is-invalid @enderror" id="athlete_id_3" name="athlete_id[]" data-placeholder="Pilih Atlet">
                             <option value=""></option>
                             @foreach ($athletes as $athlete)
                               @if (old('athlete_id_3') == $athlete->athlete_id)
-                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
                               @else
-                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
                               @endif
                             @endforeach
                           </select>
@@ -176,18 +142,20 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button type="submit" name="submit" class="btn btn-primary btn-block">Register Athlete</button>
+                <button type="submit" name="submit" class="btn btn-primary float-right">Daftar Atlet</button>
               </div>
               <!-- /.card-footer -->
             </form>
           </div>
         </div>
       </div>
+      @endif
+
       <div class="row">
         <div class="col">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Athlete List</h3>
+              <h3 class="card-title">Daftar Atlet</h3>
     
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -202,12 +170,14 @@
                 <thead>
                 <tr>
                   <th>No</th>
-                  <th>Athlete</th>
-                  <th>Category</th>
-                  <th>Age Group</th>
-                  <th>Class</th>
-                  <th>Price</th>
-                  
+                  <th>Atlet</th>
+                  <th>Kategori Pertandingan</th>
+                  <th>Kategori Umur</th>
+                  <th>Kelas</th>
+                  <th>Harga</th>
+                  @if (!isset($payment->status))
+                  <th>Aksi</th>
+                  @endif
                 </tr>
                 </thead>
                 <tbody>
@@ -217,7 +187,7 @@
                       <td>
                         <ul style="margin: 0; padding: 0;">
                           @foreach ($register->athletes as $athlete)
-                              <li>{{ $athlete->athlete_name ?? 'N/A' }}</li>
+                              <li>{{ $athlete->athlete_name ?? 'N/A' }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</li>
                           @endforeach
                         </ul>
                       </td>
@@ -229,7 +199,11 @@
                         <td>-</td>
                       @endif
                       <td>Rp {{  number_format($register->price, 0, ',', '.') }}</td>
-                     
+                      @if (!isset($payment->status))
+                      <td class="py-0 align-middle">
+                        <a href="/userEvent/register/destroy/{{ $register->register_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                      </td>
+                      @endif
                      
                     </tr>
                     @endforeach
@@ -237,6 +211,41 @@
               </table>
             </div>
             <!-- /.card-body -->
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="card mb-3">
+            <div class="row no-gutters">
+              <div class="col-md-2">
+                <img class="img-fluid" src="{{ asset('img/screen.jpg') }}" alt="Default Banner">
+              </div>
+              <div class="col-md-10 d-flex align-items-center">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-xl-4">
+                      <p class="card-text mb-1">Total Biaya Pendaftaran</p>
+                      <p class="font-weight-bold h3 mb-1">Rp {{  number_format($totalPrice, 0, ',', '.') }}</p>
+                    </div>
+                    <div class="col-xl-4">
+                      <p class="card-text mb-1">Total Pendaftaran</p>
+                      <p class="font-weight-bold h3 mb-1">{{  count($registers) }}</p>
+                    </div>
+                    <div class="col-xl-4">
+                      <p class="card-text mb-1">Nama Official & Kontingen</p>
+                      <p class="font-weight-bold h5 mb-1">{{ $contingent->user->name }} ({{ $contingent->contingent_name }})</p>
+                    </div>
+                  </div>
+                  @if (isset($payment->status))
+                    <a href="/userEvent/register/payment/{{ $event->event_id }}" class="btn btn-success mt-3">Lihat Invoice</a>
+                  @else
+                    <a href="/userEvent/register/payment/{{ $event->event_id }}" class="btn btn-success mt-3">Bayar Biaya Pendaftaran</a>
+                  @endif
+                  
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -272,7 +281,7 @@
                       console.log('Data fetched:', data);
 
                       // Kosongkan dropdown age terlebih dahulu
-                      ageDropdown.innerHTML = '<option value="" disabled selected>Select a Age Group</option>';
+                      ageDropdown.innerHTML = '<option value="" disabled selected>Pilih Kategori Umur</option>';
 
                       // Tambahkan opsi baru berdasarkan data yang diterima
                       data.forEach(age => {
@@ -288,7 +297,7 @@
                   });
           } else {
               // Jika tidak ada kategori yang dipilih, kosongkan dropdown age
-              ageDropdown.innerHTML = '<option value="" disabled selected>Select a Age Group</option>';
+              ageDropdown.innerHTML = '<option value="" disabled selected>Pilih Kategori Umur</option>';
           }
         });
     });
@@ -317,13 +326,13 @@ document.addEventListener('DOMContentLoaded', function () {
             classDropdownContainer.classList.remove('d-none'); // Show dropdown
         } else {
             classDropdownContainer.classList.add('d-none'); // Hide dropdown
-            classDropdown.innerHTML = '<option value="" disabled selected>Select a Class Group</option>'; // Clear options
+            classDropdown.innerHTML = '<option value="" disabled selected>Pilih Kelas</option>'; // Clear options
         }
 
         // Clear age dropdown when category changes
         ageDropdown.value = '';
         selectedAgeId.innerText = '';
-        classDropdown.innerHTML = '<option value="" disabled selected>Select a Class Group</option>'; // Clear class dropdown
+        classDropdown.innerHTML = '<option value="" disabled selected>Pilih Kelas</option>'; // Clear class dropdown
     });
 
     ageDropdown.addEventListener('change', function () {
@@ -341,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .then(data => {
                     // Clear the class dropdown before adding new options
-                    classDropdown.innerHTML = '<option value="" disabled selected>Select a Class Group</option>';
+                    classDropdown.innerHTML = '<option value="" disabled selected>Pilih Kelas</option>';
 
                     data.forEach(classItem => {
                         const option = document.createElement('option');
@@ -355,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         } else {
             // Clear the class dropdown if no age is selected
-            classDropdown.innerHTML = '<option value="" disabled selected>Select a Class Group</option>';
+            classDropdown.innerHTML = '<option value="" disabled selected>Pilih Kelas</option>';
         }
     });
 });

@@ -21,7 +21,10 @@ return new class extends Migration
             $table->foreign('age_id')->references('age_id')->on('ages')->onUpdate('cascade')->onDelete('restrict');
             $table->unsignedBigInteger('class_id')->nullable();
             $table->foreign('class_id')->references('class_id')->on('matchclasses')->onUpdate('cascade')->onDelete('restrict');
+            $table->unsignedBigInteger('contingent_id');
+            $table->foreign('contingent_id')->references('contingent_id')->on('contingents')->onUpdate('cascade')->onDelete('restrict');
             $table->integer('price');
+            $table->string('status');
             $table->timestamps();
         });
     }

@@ -10,7 +10,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Halaman Utama</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -22,7 +22,7 @@
       <div class="container-fluid">
         <!-- Small boxes (Stat box) -->
         <div class="row">
-          <div class="col-6">
+          {{-- <div class="col-6">
             <!-- small box -->
             <div class="small-box bg-info">
               <div class="inner">
@@ -34,12 +34,12 @@
                 <i class="fa-solid fa-user"></i>
               </div>
             </div>
-          </div>
-          <div class="col-6">
+          </div> --}}
+          <div class="col-12">
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>2</h3>
+                <h3>{{ $eventHandle }}</h3>
 
                 <p>Total Event</p>
               </div>

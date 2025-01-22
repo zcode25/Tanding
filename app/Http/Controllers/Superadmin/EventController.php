@@ -34,7 +34,7 @@ class EventController extends Controller
 
         Event::create($validatedData);
 
-        return redirect('/superadminEvent')->with('success', 'Data saved successfully');
+        return redirect('/superadminEvent')->with('success', 'Data Berhasil Disimpan');
 
     }
 
@@ -66,7 +66,7 @@ class EventController extends Controller
 
         Event::where('event_id', $event->event_id)->update($validatedData);
 
-        return redirect('/superadminEvent')->with('success', 'Data updated successfully');
+        return redirect('/superadminEvent')->with('success', 'Data Berhasil Disimpan');
 
     }
 
@@ -102,7 +102,7 @@ class EventController extends Controller
 
         Administrator::create($validatedData);
 
-        return redirect('/superadminEvent/detail/'. $validatedData['event_id'])->with('success', 'Data saved successfully');
+        return redirect('/superadminEvent/detail/'. $validatedData['event_id'])->with('success', 'Data Berhasil Disimpan');
     }
 
     public function adminDestroy(Administrator $administrator) {
@@ -111,11 +111,11 @@ class EventController extends Controller
             Administrator::where('administrator_id', $administrator->administrator_id)->delete();
         } catch (\Illuminate\Database\QueryException){
             return back()->with([
-                'error' => 'Data cannot be deleted, because the data is still needed!',
+                'error' => 'Data tidak dapat dihapus, karena data masih diperlukan!',
             ]);
         }
 
-        return back()->with('success', 'Data deleted successfully');
+        return back()->with('success', 'Data Berhasil Dihapus');
     }
 
 }

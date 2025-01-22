@@ -21,6 +21,7 @@ return new class extends Migration
             $table->date('close_reg');
             $table->date('start_match');
             $table->date('end_match');
+            $table->integer('quota');
             $table->string('status');
             $table->timestamps();
         });

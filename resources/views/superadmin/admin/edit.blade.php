@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Supplier</h1>
+            <h1>Data Admin</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -21,7 +21,7 @@
             <!-- Horizontal Form -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Form Update Admin</h3>
+                <h3 class="card-title">Data Admin</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -29,28 +29,28 @@
                 @csrf
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                    <label for="name" class="form-label">Nama <span class="text-danger">*</span></label>
                     <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', $admin->name) }}">
                     @error('name') 
                       <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                   </div>
                   <div class="form-group">
-                    <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                    <label for="email" class="form-label">Alamat Email <span class="text-danger">*</span></label>
                     <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', $admin->email) }}">
                     @error('email') 
                       <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                   </div>
                   <div class="form-group">
-                    <label for="phone" class="form-label">Phone <span class="text-danger">*</span></label>
+                    <label for="phone" class="form-label">No WhatsApp <span class="text-danger">*</span></label>
                     <input type="tel" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', $admin->phone) }}">
                     @error('phone') 
                       <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                   </div>
                   <div class="form-group">
-                    <label for="address" class="form-label">Address <span class="text-danger">*</span></label>
+                    <label for="address" class="form-label">Alamat <span class="text-danger">*</span></label>
                     <textarea class="form-control @error('address') is-invalid @enderror" rows="3" id="address" name="address">{{ old('address', $admin->address) }}</textarea>
                     @error('address') 
                       <div class="invalid-feedback">{{ $message }}</div>
@@ -60,13 +60,48 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <a href="/superadminAdmin" class="btn btn-default">Cancel</a>
-                  <button type="submit" name="submit" class="btn btn-primary float-right">Save</button>
+                  {{-- <a href="/superadminAdmin" class="btn btn-default">Cancel</a> --}}
+                  <button type="submit" name="submit" class="btn btn-primary float-right">Simpan</button>
                 </div>
                 <!-- /.card-footer -->
               </form>
             </div>
             <!-- /.card -->
+        </div>
+        <div class="col-xl-6">
+          <!-- Reset Password Form -->
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Ubah Kata Sandi</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form action="/superadminAdmin/reset-password/{{ $admin->id }}" method="POST" class="form-horizontal">
+              @csrf
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="password" class="form-label">Kata Sandi Baru <span class="text-danger">*</span></label>
+                  <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password">
+                  @error('password') 
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="password_confirmation" class="form-label">Konfirmasi Kata Sandi Baru <span class="text-danger">*</span></label>
+                  <input type="password" class="form-control @error('password_confirmation') is-invalid @enderror" id="password_confirmation" name="password_confirmation">
+                  @error('password_confirmation') 
+                    <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
+                </div>
+              </div>
+              <!-- /.card-body -->
+              <div class="card-footer">
+                <button type="submit" name="submit" class="btn btn-primary float-right">Ubah Kata Sandi</button>
+              </div>
+              <!-- /.card-footer -->
+            </form>
+          </div>
+          <!-- /.card -->
         </div>
       </div>
 

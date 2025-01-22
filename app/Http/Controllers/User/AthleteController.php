@@ -27,9 +27,9 @@ class AthleteController extends Controller
         confirmDelete($title, $text);
 
         $contingent = Contingent::where('user_id', auth()->user()->id)->first();
-
         $athletes = Athlete::where('contingent_id', $contingent->contingent_id)->get();
 
+       
         return view('user.athlete.index', [
             'athletes' => $athletes
         ]);
@@ -181,7 +181,7 @@ class AthleteController extends Controller
         if ($count == 0) {
             return redirect('/userAthlete')->with('error', 'Data tidak sesuai');
         } else {
-            return redirect('/userAthlete')->with('success', 'Data saved successfully ' . $count . ' athlete');
+            return redirect('/userAthlete')->with('success', 'Data Berhasil Disimpan ' . $count . ' athlete');
         }
         
     }
@@ -232,7 +232,7 @@ class AthleteController extends Controller
         
         Athlete::create($validatedData);
 
-        return redirect('/userAthlete')->with('success', 'Data saved successfully');
+        return redirect('/userAthlete')->with('success', 'Data Berhasil Disimpan');
     }
 
     public function edit(Athlete $athlete) {
@@ -281,7 +281,7 @@ class AthleteController extends Controller
         
         Athlete::where('athlete_id', $athlete->athlete_id)->update($validatedData);
 
-        return redirect('/userAthlete')->with('success', 'Data updated successfully');
+        return redirect('/userAthlete')->with('success', 'Data Berhasil Disimpan');
 
     }
 

@@ -38,7 +38,7 @@
           <a href="/superadminDashboard" class="nav-link {{ Request::is('superadminDashboard*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-tachometer-alt"></i>
             <p>
-              Dashboard
+              Halaman Utama
             </p>
           </a>
         </li>
@@ -46,7 +46,7 @@
           <a href="/superadminAdmin" class="nav-link {{ Request::is('superadminAdmin*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-user"></i>
             <p>
-              Admin
+              Data Admin
             </p>
           </a>
         </li>
@@ -54,7 +54,7 @@
           <a href="/superadminEvent" class="nav-link {{ Request::is('superadminEvent*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-paper-plane"></i>
             <p>
-              Event
+              Perlombaan
             </p>
           </a>
         </li>
@@ -62,7 +62,7 @@
           <a href="/superadminCategory" class="nav-link {{ Request::is('superadminCategory*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-database"></i>
             <p>
-              Category
+              Pertandingan
             </p>
           </a>
         </li>
@@ -70,14 +70,30 @@
           <a href="/superadminAge" class="nav-link {{ Request::is('superadminAge*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-list-ol"></i>
             <p>
-              Age Group
+              Kategori Umur
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/superadminPayment" class="nav-link {{ Request::is('superadminPayment*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-credit-card"></i>
+            <p>
+              Pembayaran
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a href="/superadminAccount/{{ auth()->user()->id }}" class="nav-link {{ Request::is('superadminAccount*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-id-card"></i>
+            <p>
+              Akun Saya
             </p>
           </a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link" id="logoutLink">
               <i class="far fa-solid fa-arrow-left nav-icon"></i>
-              <p>Logout</p>
+              <p>Keluar</p>
           </a>
         </li>
       </ul>
@@ -102,13 +118,14 @@
       event.preventDefault(); // Menghentikan link agar tidak langsung terjadi redirect
 
       Swal.fire({
-          title: 'Are you sure?',
-          text: "You will be logged out.",
+          title: 'Apakah kamu yakin?',
+          text: "Kamu akan keluar dari sistem.",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, log me out!'
+          confirmButtonText: 'Ya, keluar dari sistem!',
+          cancelButtonText: 'Batal'
       }).then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/logout'; // Redirect ke URL logout

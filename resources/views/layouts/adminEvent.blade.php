@@ -44,9 +44,16 @@
   <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
   <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
 
+  <link rel="stylesheet" href="/css/jquery.bracket-world.css" type="text/css" media="all">
+  <style>
+      #bracket {
+          width: 100%;
+          max-width: 800px;
+          margin: 20px auto;
+      }
+  </style>
+
   {{-- <script src="https://cdn.printjs.crabbly.com/print.min.js"></script> --}}
-
-
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">

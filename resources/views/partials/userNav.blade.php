@@ -36,17 +36,17 @@
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item">
           <a href="/userDashboard" class="nav-link {{ Request::is('userDashboard*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-tachometer-alt"></i>
+            <i class="nav-icon fas fa fa-home"></i>
             <p>
-              Dashboard
+              Halaman Utama
             </p>
           </a>
         </li>
         <li class="nav-item">
           <a href="/userContingent" class="nav-link {{ Request::is('userContingent*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-building"></i>
+            <i class="nav-icon fas fa fa-cubes"></i>
             <p>
-              Contingent
+              Data Kontingen
             </p>
           </a>
         </li>
@@ -54,7 +54,7 @@
           <a href="/userAthlete" class="nav-link {{ Request::is('userAthlete*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-users"></i>
             <p>
-              Athlete
+              Data Atlet
             </p>
           </a>
         </li>
@@ -62,14 +62,14 @@
           <a href="/userEvent" class="nav-link {{ Request::is('userEvent*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-paper-plane"></i>
             <p>
-              Event
+              Perlombaan
             </p>
           </a>
         </li>
         <li class="nav-item">
           <a href="#" class="nav-link" id="logoutLink">
               <i class="far fa-solid fa-arrow-left nav-icon"></i>
-              <p>Logout</p>
+              <p>Keluar</p>
           </a>
         </li>
       </ul>
@@ -94,13 +94,14 @@
       event.preventDefault(); // Menghentikan link agar tidak langsung terjadi redirect
 
       Swal.fire({
-          title: 'Are you sure?',
-          text: "You will be logged out.",
+          title: 'Apakah kamu yakin?',
+          text: "Kamu akan keluar dari sistem.",
           icon: 'warning',
           showCancelButton: true,
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, log me out!'
+          confirmButtonText: 'Ya, keluar dari sistem!',
+          cancelButtonText: 'Batal'
       }).then((result) => {
           if (result.isConfirmed) {
               window.location.href = '/logout'; // Redirect ke URL logout

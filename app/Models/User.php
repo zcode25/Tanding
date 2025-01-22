@@ -6,7 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+// use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class User extends Authenticatable
@@ -23,8 +23,8 @@ class User extends Authenticatable
         'password',
     ];
 
-    use SoftDeletes;
-    protected $dates = ['deleted_at'];
+    // use SoftDeletes;
+    // protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -51,6 +51,11 @@ class User extends Authenticatable
 
     public function reportedProjects() {
         return $this->hasManyThrough(Event::class, Administrator::class, 'user_id', 'event_id', 'id', 'project_id');
+    }
+
+    public function contingent()
+    {
+        return $this->hasMany(Contingent::class, 'user_id');
     }
 
 }

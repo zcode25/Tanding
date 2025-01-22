@@ -10,7 +10,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard User</h1>
+            <h1 class="m-0">Halaman Utama</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -24,14 +24,14 @@
         <div class="row">
           <div class="col-6">
             <!-- small box -->
-            <div class="small-box bg-info">
+            <div class="small-box bg-primary">
               <div class="inner">
-                <h3>1</h3>
+                <h3>{{ $countAthlete }}</h3>
 
-                <p>Total Admin</p>
+                <p>Jumlah Atlet</p>
               </div>
               <div class="icon">
-                <i class="fa-solid fa-user"></i>
+                <i class="fa-solid fa-users"></i>
               </div>
             </div>
           </div>
@@ -39,9 +39,9 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>2</h3>
+                <h3>{{ count($informations) }}</h3>
 
-                <p>Total Event</p>
+                <p>Jumlah Event</p>
               </div>
               <div class="icon">
                 <i class="fa-regular fa-paper-plane"></i>
@@ -50,19 +50,40 @@
           </div>
         </div>
         <div class="row">
+          @foreach ($informations as $information)
+          @php
+              $banner = $information->event->banners->first();
+              $documents = $information->event->documents;
+              $competitions = $information->event->competitions;
+          @endphp
           <div class="col-xl-12">
-            <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Info Detail</h3>
-              </div>
-              <!-- /.card-header -->
-                <div class="card-body">
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <div class="card mb-3">
+              <div class="row no-gutters">
+                <div class="col-md-2">
+                  @if ($banner)
+                      <img class="img-fluid" src="{{ asset('storage/' . $banner->banner_img) }}" alt="{{ $information->title }}">
+                  @else
+                      <img class="img-fluid" src="{{ asset('img/screen.jpg') }}" alt="Default Banner">
+                  @endif
                 </div>
-                <!-- /.card-body -->
+                <div class="col-md-10 d-flex align-items-center">
+                  <div class="card-body">
+                    <h3 class="mb-3">{{ $information->title }}</h3>
+                    <p class="text-md">{!! $information->description !!}</p>
+                    <div class="mt-8">
+                      @foreach ($documents as $document)
+                        <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-dark">Download {{ $document->document_name }} <i class="fa fa-download ml-2" aria-hidden="true"></i></a>
+                      @endforeach
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
+          @endforeach
+          
         </div>
+
 
         <!-- /.row -->
       </div><!-- /.container-fluid -->

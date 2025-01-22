@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Event</h1>
+            <h1>Perlombaan</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -17,28 +17,28 @@
     <!-- Main content -->
     <section class="content">
       <div class="row">
-        <div class="col-xl-6">
+        <div class="col-xl-4">
           <!-- Horizontal Form -->
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Event Detail</h3>
+              <h3 class="card-title">Detail Perlombaan</h3>
             </div>
             <!-- /.card-header -->
               <div class="card-body">
                 <div class="mb-3">
-                  <p class="mb-2 font-weight-bold">Event Name</p>
+                  <p class="mb-2 font-weight-bold">Nama Perlombaan</p>
                   <p>{{ $event->event_name }}</p>
                 </div>
                 <div class="mb-3">
-                  <p class="mb-2 font-weight-bold">Event Description</p>
+                  <p class="mb-2 font-weight-bold">Deskripsi</p>
                   <p>{{ $event->event_desc }}</p>
                 </div>
                 <div class="mb-3">
-                  <p class="mb-2 font-weight-bold">Event Date</p>
+                  <p class="mb-2 font-weight-bold">Tanggal Dibuat</p>
                   <p>{{ $event->created_at->format('Y-m-d') }}</p>
                 </div>
                 <div class="mb-3">
-                  <p class="mb-2 font-weight-bold">Event Status</p>
+                  <p class="mb-2 font-weight-bold">Status</p>
                   <p>{{ $event->event_status }}</p>
                 </div>
               </div>
@@ -46,11 +46,11 @@
           </div>
           <!-- /.card -->
         </div>
-        <div class="col-xl-6">
+        <div class="col-xl-8">
             <!-- Horizontal Form -->
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Form Select Admin</h3>
+                <h3 class="card-title">Daftar Admin</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -60,7 +60,7 @@
                   <div class="form-group">
                     <input type="hidden" id="event_id" name="event_id" value="{{ $event->event_id }}">
                     <label for="user_id" class="form-label">Admin <span class="text-danger">*</span></label>
-                    <select class="form-control select2bs4" id="user_id" name="user_id" data-placeholder="Select a Admin">
+                    <select class="form-control select2bs4" id="user_id" name="user_id" data-placeholder="Pilih Admin">
                       <option value=""></option>
                       @foreach ($admins as $admin)
                           @if (old('admin_id') == $admin->id)
@@ -72,51 +72,48 @@
                     </select>
                   </div>
                   <div class="d-grid gap-2">
-                    <button type="submit" name="submit" class="btn btn-primary btn-block">Add</button>
+                    <button type="submit" name="submit" class="btn btn-primary btn-block">Tambah</button>
                   </div>
                   <hr>
-                  {{-- @php
-                      dd(count($assetProcurementDevices))
-                  @endphp --}}
-                  {{-- @if (count($assetProcurementDevices) > 0) --}}
+                  @if (count($administrators) > 0)
                   <table class="table table-sm">
                     <thead>
                       <tr>
                         <th>No</th>
                         <th>Admin</th>
-                        <th>Email Address</th>
-                        <th>Phone</th>
-                        <th>Action</th>
+                        <th>Alamat Email</th>
+                        <th>No WhatsApp</th>
+                        <th>Aksi</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      @php
-                          $i = 1;
-                      @endphp
-                      @foreach ($administrators as $administrator)
-                      <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $administrator->user->name }}</td>
-                        <td>{{ $administrator->user->email }}</td>
-                        <td>{{ $administrator->user->phone }}</td>
-                        <td>
-                          <a href="/superadminEvent/admin/destroy/{{ $administrator->administrator_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                        </td>
-                      </tr>
-                      @endforeach
+                    <tbody>                  
+                        @php
+                            $i = 1;
+                        @endphp
+                        @foreach ($administrators as $administrator)
+                        <tr>
+                          <td>{{ $i++ }}</td>
+                          <td>{{ $administrator->user->name }}</td>
+                          <td>{{ $administrator->user->email }}</td>
+                          <td>{{ $administrator->user->phone }}</td>
+                          <td>
+                            <a href="/superadminEvent/admin/destroy/{{ $administrator->administrator_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus <i class="fa fa-trash ml-2" aria-hidden="true"></i></a>
+                          </td>
+                        </tr>
+                        @endforeach
                     </tbody>
                   </table>
-                  {{-- @else
-                    <p class="text-center">No data available in table</p>
-                  @endif --}}
+                  @else
+                    <p class="text-center">Belum ada data yang tersedia</p>
+                  @endif
                   
                 </div>
               </form>
                 <!-- /.card-body -->
-                <div class="card-footer">
-                  <a href="/superadminEvent" class="btn btn-default">Back</a>
+                {{-- <div class="card-footer"> --}}
+                  {{-- <a href="/superadminEvent" class="btn btn-default">Back</a> --}}
                   {{-- <a href="/assetProcurement/save/" class="btn btn-success float-right">Save</a> --}}
-                </div>
+                {{-- </div> --}}
                 <!-- /.card-footer -->
             </div>
             <!-- /.card -->

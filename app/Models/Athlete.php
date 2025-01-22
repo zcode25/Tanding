@@ -18,4 +18,9 @@ class Athlete extends Model
         return $this->belongsTo(Age::class, 'age_id');
     }
 
+    public function contingent()
+    {
+        return $this->belongsTo(Contingent::class, 'contingent_id');
+    }
+
 }

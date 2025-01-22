@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Event</h1>
+            <h1>Perlombaan</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
@@ -40,13 +40,13 @@
                     <img class="img-fluid" src="{{ asset('img/screen.jpg') }}" alt="Default Banner">
                 @endif
               </div>
-              <div class="col-md-8">
+              <div class="col-md-8 d-flex align-items-center">
                 <div class="card-body">
-                  <h2 class="mb-3 font-weight-bold">{{ $information->title }}</h2>
+                  <h3 class="mb-3">{{ $information->title }}</h3>
                   <p class="card-text text-md">{!! $information->description !!}</p>
                   <div class="mt-8">
                     @foreach ($documents as $document)
-                      <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-dark">Unduh {{ $document->document_name }}</a>
+                      <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-dark">Download {{ $document->document_name }} <i class="fa fa-download ml-2" aria-hidden="true"></i></a>
                     @endforeach
                   </div>
                   <div class="mt-4">
@@ -73,7 +73,13 @@
                     </ul>
                   </div>
                   <div class="mt-4">
-                    <a href="/userEvent/register/{{ $information->event_id }}" class="btn btn-primary btn-block">Daftar Event</a>
+                    @if (now()->toDateString() >= $information->open_reg && now()->toDateString() <= $information->close_reg)
+                        <a href="/userEvent/register/{{ $information->event_id }}" class="btn btn-primary btn-block">Daftar Event</a>
+                    @elseif (now()->toDateString()  < $information->open_reg)
+                        <p class="text-muted text-center">Pendaftaran Belum Dibuka</p>
+                    @elseif (now()->toDateString()  > $information->close_reg)
+                        <p class="text-muted text-center">Pendaftaran Sudah Ditutup</p>
+                    @endif
                   </div>
                 </div>
               </div>

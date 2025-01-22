@@ -15,11 +15,12 @@ class Registerathlete extends Model
 
     public function athlete()
     {
-        return $this->belongsTo(Athlete::class, 'athlete_id');
+        return $this->belongsTo(Athlete::class, 'athlete_id', 'athlete_id');
     }
 
     public function register()
     {
         return $this->belongsTo(Register::class, 'register_id');
     }
+
 }

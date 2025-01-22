@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Athlete</h1>
+            <h1>Data Atlet</h1>
           </div>
           <div class="col-sm-6">
             <div class="float-sm-right">
@@ -27,8 +27,8 @@
                   </div>
                 </form>
   
-                <a href="/userAthlete/template" class="btn btn-dark ml-2"> Download Template Excel</a>
-                <a href="/userAthlete/create" class="btn btn-primary ml-2">Create New</a>
+                <a href="/userAthlete/template" class="btn btn-dark ml-2"> Template Excel</a>
+                <a href="/userAthlete/create" class="btn btn-primary ml-2">Tambah Data</a>
               </div>
   
             </div>
@@ -43,7 +43,7 @@
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Athlete List</h3>
+          <h3 class="card-title">Daftar Atlet</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -66,7 +66,7 @@
               <th>Kategori Umur</th>
               <th>Nama Sekolah</th>
               <th>Berat Badan</th>
-              <th>Action</th>
+              <th>Aksi</th>
             </tr>
             </thead>
             <tbody>
@@ -80,7 +80,7 @@
                   @if ($athlete->athlete_photo)
                     <img class="w-full h-auto rounded-lg" src="{{ asset('storage/' . $athlete->athlete_photo) }}" alt="Photo" width="50">
                   @else
-                    <img class="w-full h-auto rounded-lg" src="{{ asset('img/screen.jpg') }}" alt="Default photo" width="50">
+                    <img class="w-full h-auto rounded-lg" src="{{ asset('img/profile.png') }}" alt="Default photo" width="50">
                   @endif
                 </td>
                 <td class="py-0 align-middle">{{ $athlete->athlete_name }}</td>
