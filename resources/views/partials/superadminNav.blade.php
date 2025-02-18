@@ -51,6 +51,14 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="/superadminContingent" class="nav-link {{ Request::is('superadminContingent*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-globe"></i>
+            <p>
+              Data Kontingen
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="/superadminEvent" class="nav-link {{ Request::is('superadminEvent*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-paper-plane"></i>
             <p>
@@ -58,7 +66,7 @@
             </p>
           </a>
         </li>
-        <li class="nav-item">
+        {{-- <li class="nav-item">
           <a href="/superadminCategory" class="nav-link {{ Request::is('superadminCategory*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-database"></i>
             <p>
@@ -73,7 +81,7 @@
               Kategori Umur
             </p>
           </a>
-        </li>
+        </li> --}}
         <li class="nav-item">
           <a href="/superadminPayment" class="nav-link {{ Request::is('superadminPayment*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-credit-card"></i>
@@ -82,6 +90,7 @@
             </p>
           </a>
         </li>
+        
         <li class="nav-item">
           <a href="/superadminAccount/{{ auth()->user()->id }}" class="nav-link {{ Request::is('superadminAccount*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-id-card"></i>

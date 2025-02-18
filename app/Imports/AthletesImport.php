@@ -16,20 +16,19 @@ class AthletesImport implements ToModel, WithHeadingRow
     */
     public function model(array $row)
     {
-        $age_id = explode(' - ', $row['age_id_age_name'])[0];
+        // dd($row);
         $contingent = Contingent::where('user_id', auth()->user()->id)->first();
         $contingent_id = $contingent ? $contingent->contingent_id : null;
 
         $data = [
-            'athlete_name'   => $row['athlete_name'],
-            'athlete_gender' => $row['athlete_gender'],
-            'date_birth'     => $row['date_of_birth_yyyy_mm_dd'],
-            'place_birth'    => $row['place_of_birth'],
-            'nik'            => $row['nik_id_number'],
-            'weight'         => $row['weight_kg'],
-            'height'         => $row['height_cm'],
-            'school_name'    => $row['school_name'],
-            'age_id'         => $age_id,
+            'athlete_name'   => $row['nama'],
+            'athlete_gender' => $row['jenis_kelamin'],
+            'date_birth'     => $row['tanggal_lahir_yyyy_mm_dd'],
+            'place_birth'    => $row['tempat_lahir'],
+            'nik'            => $row['nik'],
+            'weight'         => $row['berat_kg'],
+            'height'         => $row['tinggi_cm'],
+            'school_name'    => $row['nama_sekolah'],
             'contingent_id'  => $contingent_id 
         ];
 
@@ -41,7 +40,6 @@ class AthletesImport implements ToModel, WithHeadingRow
             empty($data['weight']) ||
             empty($data['height']) ||
             empty($data['school_name']) ||
-            empty($data['age_id']) ||
             empty($data['contingent_id'])) {
 
             return;

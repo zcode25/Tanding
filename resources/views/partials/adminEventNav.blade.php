@@ -34,14 +34,6 @@
     <!-- Sidebar Menu -->
     <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        {{-- <li class="nav-item">
-          <a href="/adminDashboard" class="nav-link {{ Request::is('adminDashboard*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-tachometer-alt"></i>
-            <p>
-              Dashboard
-            </p>
-          </a>
-        </li> --}}
         
         <li class="nav-item">
           <a href="/adminEvent/detail/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/detail*') ? 'active' : '' }}">
@@ -52,9 +44,9 @@
           </a>
         </li>
 
-        <li class="nav-item {{ Request::is('adminEvent/information*', 'adminEvent/document*', 'adminEvent/competition*') ? 'menu-open' : '' }}">
-          <a href="#" class="nav-link {{ Request::is('adminEvent/information*', 'adminEvent/document*', 'adminEvent/competition*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-file"></i>
+        <li class="nav-item {{ Request::is('adminEvent/information*', 'adminEvent/document*', 'adminEvent/category*', 'adminEvent/age*', 'adminEvent/competition*') ? 'menu-open' : '' }}">
+          <a href="#" class="nav-link {{ Request::is('adminEvent/information*', 'adminEvent/document*', 'adminEvent/category*', 'adminEvent/age*', 'adminEvent/competition*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-id-card"></i>
             <p>
               Info Perlombaan
               <i class="right fas fa fa-angle-left"></i>
@@ -77,8 +69,22 @@
             </li>
 
             <li class="nav-item">
+              <a href="/adminEvent/category/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/category*') ? 'active' : '' }}">
+                <i class="far fa-solid fa-cubes nav-icon"></i>
+                <p>Pertandingan</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="/adminEvent/age/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/age*') ? 'active' : '' }}">
+                <i class="far fa-solid fa-database nav-icon"></i>
+                <p>Kategori Umur</p>
+              </a>
+            </li>
+
+            <li class="nav-item">
               <a href="/adminEvent/competition/{{ $event->event_id }}" class="nav-link {{ Request::is('adminEvent/competition*') ? 'active' : '' }}">
-                <i class="far fa-solid fa-list nav-icon"></i>
+                <i class="far fa-solid fa-star nav-icon"></i>
                 <p>Kompetisi</p>
               </a>
             </li>
@@ -86,41 +92,107 @@
           </ul>
         </li>
 
-        <li class="nav-item">
-          <a href="/adminPayment/{{ $event->event_id }}" class="nav-link {{ Request::is('adminPayment*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-credit-card-alt""></i>
+        <li class="nav-item {{ Request::is('adminPayment*', 'adminRegister*') ? 'menu-open' : '' }}">
+          <a href="#" class="nav-link {{ Request::is('adminPayment*', 'adminRegister*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-clipboard-list"></i>
             <p>
-              Pembayaran
+              Pendaftaran
+              <i class="right fas fa fa-angle-left"></i>
             </p>
           </a>
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a href="/adminPayment/{{ $event->event_id }}" class="nav-link {{ Request::is('adminPayment*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-credit-card-alt""></i>
+                <p>
+                  Pembayaran
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="/adminRegister/{{ $event->event_id }}" class="nav-link {{ Request::is('adminRegister*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-check-square""></i>
+                <p>
+                  Data Pendaftaran
+                </p>
+              </a>
+            </li>
+
+          </ul>
         </li>
 
-        <li class="nav-item">
-          <a href="/adminRegister/{{ $event->event_id }}" class="nav-link {{ Request::is('adminRegister*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-user""></i>
-            <p>
-              Daftar Peserta
-            </p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="/adminDraw/{{ $event->event_id }}" class="nav-link {{ Request::is('adminDraw*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-random""></i>
-            <p>
-              Pengundian
-            </p>
-          </a>
-        </li>
-
-        <li class="nav-item">
-          <a href="/adminMatch/{{ $event->event_id }}" class="nav-link {{ Request::is('adminMatch*') ? 'active' : '' }}">
-            <i class="nav-icon fas fa fa-bolt""></i>
+        
+        <li class="nav-item {{ Request::is('adminParticipant*', 'adminDraw*', 'adminBracket*', 'adminMatch*', 'adminMedal*', 'adminRecap*') ? 'menu-open' : '' }}">
+          <a href="#" class="nav-link {{ Request::is('adminParticipant*', 'adminDraw*', 'adminBracket*', 'adminMatch*', 'adminMedal*', 'adminRecap*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa-hashtag"></i>
             <p>
               Pertandingan
+              <i class="right fas fa fa-angle-left"></i>
             </p>
           </a>
+          <ul class="nav nav-treeview">
+
+            <li class="nav-item">
+              <a href="/adminParticipant/{{ $event->event_id }}" class="nav-link {{ Request::is('adminParticipant*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-users""></i>
+                <p>
+                  Daftar Peserta
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="/adminDraw/{{ $event->event_id }}" class="nav-link {{ Request::is('adminDraw*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-random""></i>
+                <p>
+                  Pengundian
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="/adminBracket/{{ $event->event_id }}" class="nav-link {{ Request::is('adminBracket*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-code-fork""></i>
+                <p>
+                  Bagan Tanding
+                </p>
+              </a>
+            </li>
+    
+            <li class="nav-item">
+              <a href="/adminMatch/{{ $event->event_id }}" class="nav-link {{ Request::is('adminMatch*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-bolt""></i>
+                <p>
+                  Penilaian TGR
+                </p>
+              </a>
+            </li>
+    
+            <li class="nav-item">
+              <a href="/adminMedal/{{ $event->event_id }}" class="nav-link {{ Request::is('adminMedal*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-trophy""></i>
+                <p>
+                  Perolehan Medali
+                </p>
+              </a>
+            </li>
+
+            <li class="nav-item">
+              <a href="/adminRecap/{{ $event->event_id }}" class="nav-link {{ Request::is('adminRecap*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa fa-star""></i>
+                <p>
+                  Rekapitulasi Medali
+                </p>
+              </a>
+            </li>
+
+          </ul>
         </li>
+        
+
+
 
         <li class="nav-item">
           <a href="/adminEvent" class="nav-link">

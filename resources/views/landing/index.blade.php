@@ -13,6 +13,17 @@
         body {
             font-family: 'Poppins', sans-serif;
         }
+        .animate-number {
+            animation: count 2s ease-out forwards;
+        }
+        @keyframes count {
+            from {
+                content: attr(data-from);
+            }
+            to {
+                content: attr(data-to);
+            }
+        }
     </style>
 </head>
 
@@ -32,32 +43,59 @@
       </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="bg-white py-20">
-      <div class="container mx-auto text-center lg:px-80">
-          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-indigo-600">
-              <span class="text-black leading-normal">Raih Prestasi di Kejuaraan</span> Pencak Silat
-          </h1>
-          <p class="text-xl mt-7 text-gray-800 leading-normal">
-              Bergabunglah dalam platform yang menyediakan informasi lengkap tentang kejuaraan olahraga beladiri. Temukan kompetisi sesuai bakatmu!
-          </p>
-          <a href="/register"
-              class="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition">
-              Daftar Kontingen Kamu Sekarang!
-          </a>
-      </div>
+    <section class="bg-white min-h-screen flex flex-col justify-center">
+        <div class="container mx-auto px-6 lg:px-20 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center mt-16 lg:-mt-24">
+            <!-- Left Content -->
+            <div class="text-center lg:text-left">
+                <h1 class="text-4xl md:text-5xl lg:text-5xl font-semibold text-indigo-600">
+                    <span class="text-black leading-tight block">Raih Prestasi di Kejuaraan </span> Pencak Silat
+                </h1>
+                <p class="text-lg md:text-xl mt-5 text-gray-800 leading-relaxed">
+                    Bergabunglah dalam platform yang menyediakan informasi lengkap tentang kejuaraan olahraga beladiri. Temukan kompetisi sesuai bakatmu!
+                </p>
+                <a href="/register"
+                   class="mt-8 inline-block px-8 py-3 bg-indigo-600 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition">
+                    Daftar Kontingen Kamu Sekarang!
+                </a>
+            </div>
+
+            <!-- Right Content (Image) -->
+            <div class="flex justify-center">
+                <img src="{{ asset('img/screen.jpg') }}" alt="Pencak Silat Illustration" 
+                     class="w-full max-w-lg lg:max-w-xl border-8 border-white rotate-3 rounded-lg shadow-lg hover:shadow-xl transition duration-300 transform hover:rotate-0">
+            </div>
+        </div>
+
+        <!-- Stats Section -->
+        <div class="container mx-auto mt-24 px-6 lg:px-20 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white border-2 border-indigo-600 rounded-lg shadow-lg p-6 text-center">
+                <h2 class="text-6xl text-indigo-600 font-bold animate-number" data-from="0" data-to="{{ $countEvent }}"></h2>
+                <p class="mt-2 text-xl font-semibold">Event</p>
+                <p class="mt-2">Event yang terdaftar</p>
+            </div>
+            <div class="bg-white border-2 border-indigo-600 rounded-lg shadow-lg p-6 text-center">
+                <h2 class="text-6xl text-indigo-600 font-bold animate-number" data-from="0" data-to="{{ $countContingent }}"></h2>
+                <p class="mt-2 text-xl font-semibold">Kontingen</p>
+                <p class="mt-2">Kontingen yang ikut kejuaraan</p>
+            </div>
+            <div class="bg-white border-2 border-indigo-600 rounded-lg shadow-lg p-6 text-center">
+                <h2 class="text-6xl text-indigo-600 font-bold animate-number" data-from="0" data-to="{{ $countAthlete }}"></h2>
+                <p class="mt-2 text-xl font-semibold">Atlet</p>
+                <p class="mt-2">Atlet peserta dari berbagai penjuru Indonesia</p>
+            </div>
+        </div>
     </section>
   
 
     <section class="py-16">
-        <div class="container mx-auto">
+        <div class="container mx-auto px-6 lg:px-20">
             <div class="grid grid-cols-1 xl:grid-cols-2 gap-8">
                 <div class="text-center">
                     <img class="w-full h-auto rounded-lg object-cover aspect-[16/9]" src="/img/screen.jpg" alt="image description">
                 </div>
                 <div class="flex items-center justify-center text-center lg:text-left">
                     <div>
-                        <h3 class="text-5xl font-semibold text-indigo-600 leading-normal">Explore and joint Event</h3>
+                        <h3 class="text-5xl font-semibold text-indigo-600 leading-normal">Temukan pengalaman baru dalam Kejuaraan</h3>
                         <p class="text-gray-800 mt-4">Kami adalah salah satu platform penyedia layanan informasi kejuaraan olahraga beladiri yang akan diselenggaran oleh event organizer atau penyelenggara kejuaraan olahraga khususnya pencak silat, kami menyediakan layanan dari promosi, pendaftaran, sound system, it scoring system sampai alat-alat untuk kejuaraan/pertandingan olahraga khususnya pencaksilat</p>
                     </div>
                 </div>
@@ -67,7 +105,7 @@
 
     @if (count($informations) > 0)
     <section class="py-16">
-        <div class="container mx-auto">
+        <div class="container mx-auto px-6 lg:px-20">
             <h2 class="text-5xl font-semibold text-center leading-normal text-indigo-600 mb-5">Event Kejuaran Pencak Silat</h2>
             <p class="text-lg mb-12 text-gray-800 leading-normal text-center">Bergabunglah dalam platform yang menyediakan informasi lengkap tentang kejuaraan olahraga beladiri. Temukan kompetisi sesuai bakatmu!</p>
             @foreach ($informations as $information)
@@ -92,10 +130,13 @@
                         <h4 class="text-xl font-semibold text-gray-800 mb-3">Informasi Event</h4>
                         <p class="text-gray-800 mb-3">{!! $information->description !!}</p>
 
-                        <div class="mt-8">
-                          @foreach ($documents as $document)
-                            <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Unduh {{ $document->document_name }}</a>
-                          @endforeach
+                        <div class="mt-8 flex flex-wrap gap-4">
+                            @foreach ($documents as $document)
+                                <a href="{{ asset('storage/' . $document->document) }}" target="_blank" 
+                                   class="inline-block text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                                    Unduh {{ $document->document_name }}
+                                </a>
+                            @endforeach
                         </div>
                        
                       </div>
@@ -149,7 +190,7 @@
     @endif
 
     <section class="py-16">
-        <div class="container mx-auto">
+        <div class="container mx-auto px-6 lg:px-20">
             <h2 class="text-5xl font-semibold text-center leading-normal text-indigo-600 mb-5">Galeri Kejuaraan</h2>
             <p class="text-lg mb-12 text-gray-800 leading-normal text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
@@ -179,12 +220,34 @@
     <!-- Footer -->
     <footer class="bg-gray-800 py-6 mt-16">
         <div class="container mx-auto text-center text-white">
-            <p>&copy; 2024 TerasWeb. All rights reserved.</p>
+            <p>&copy; 2025 Tanding. All rights reserved.</p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
     @include('sweetalert::alert')
+
+    <script>
+        document.querySelectorAll('.animate-number').forEach((element) => {
+            const from = parseInt(element.getAttribute('data-from'));
+            const to = parseInt(element.getAttribute('data-to'));
+            const duration = 2000; // Animation duration in milliseconds
+            const frameRate = 60; // Frames per second
+            const totalFrames = Math.round((duration / 1000) * frameRate);
+            let currentFrame = 0;
+
+            const counter = setInterval(() => {
+                currentFrame++;
+                const progress = currentFrame / totalFrames;
+                const currentValue = Math.round(from + (to - from) * progress);
+                element.textContent = currentValue;
+
+                if (progress >= 1) {
+                    clearInterval(counter);
+                }
+            }, 1000 / frameRate);
+        });
+    </script>
 </body>
 
 </html>

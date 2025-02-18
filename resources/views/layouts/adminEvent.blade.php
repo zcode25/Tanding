@@ -45,14 +45,126 @@
   <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
 
   <link rel="stylesheet" href="/css/jquery.bracket-world.css" type="text/css" media="all">
-  <style>
-      #bracket {
-          width: 100%;
-          max-width: 800px;
-          margin: 20px auto;
-      }
-  </style>
 
+  <style>
+
+
+.bracket-container {
+    width: 100%;
+    overflow-x: auto; /* Scroll secara horizontal jika bagan terlalu besar */
+    padding-bottom: 10px; /* Tambahan padding agar tidak terpotong */
+}
+
+.bracket-wrapper {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 50px;
+    /* position: relative; */
+}
+
+/* Saat layar kecil (max-width: 640px), ubah posisi ke kiri */
+@media (max-width: 640px) {
+    .bracket-wrapper {
+        justify-content: flex-start;
+        padding-left: 10px; /* Tambahkan sedikit padding agar tidak menempel ke tepi */
+    }
+}
+
+.bracket {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: center; /* Pastikan round title tetap di atas */
+}
+
+.round {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    margin: 15px;
+    border-left: 2px dashed #bbbbbb;
+    border-right: 2px dashed #bbb;
+    background: #fff;
+    padding-bottom: 20px;
+    border-radius: 10px;
+}
+
+.round h4 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.match-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 250px;
+    border: 1px solid #000;
+    margin: 10px auto;
+}
+
+.match-number {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.match-participant {
+    font-weight: bold;
+}
+
+.match-participant span {
+    font-weight: bold;
+}
+
+.blue {
+    color: blue;
+}
+
+.red {
+    color: red;
+}
+
+.vs-text {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.winner {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #000;
+    font-weight: normal;
+}
+
+.loser {
+    text-decoration: line-through;
+    color: gray !important; /* Warna jadi abu-abu untuk memperjelas kekalahan */
+    opacity: 0.6;
+}
+
+.bracket-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+</style>
+
+
+  
   {{-- <script src="https://cdn.printjs.crabbly.com/print.min.js"></script> --}}
 
 </head>

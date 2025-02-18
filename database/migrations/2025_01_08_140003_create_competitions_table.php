@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('category_id')->on('categories')->onUpdate('cascade')->onDelete('restrict');
             $table->unsignedBigInteger('age_id');
             $table->foreign('age_id')->references('age_id')->on('ages')->onUpdate('cascade')->onDelete('restrict');
+            $table->string('gender');
             $table->integer('price');
             $table->timestamps();
         });

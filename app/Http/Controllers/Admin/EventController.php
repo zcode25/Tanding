@@ -12,6 +12,7 @@ use App\Models\Document;
 use App\Models\Competition;
 use App\Models\Category;
 use App\Models\Age;
+use App\Models\Matchclass;
 use Illuminate\Support\Facades\Storage;
 
 class EventController extends Controller
@@ -176,15 +177,25 @@ class EventController extends Controller
         $text = "Are you sure you want to delete?";
         confirmDelete($title, $text);
 
-        $categories = Category::all();
-        $ages = Age::all();
+        $categories = Category::where('event_id', $event->event_id)->get();
+        $ages = Age::where('event_id', $event->event_id)->get();
         $competitions = Competition::where('event_id', $event->event_id)->get();
+
+        $genders = [
+            [
+                "type" => "Putra"
+            ],
+            [
+                "type" => "Putri"
+            ],
+        ];
         
         return view('admin.event.competition.index', [
             'event' => $event,
             'categories' => $categories,
             'ages' => $ages,
             'competitions' => $competitions,
+            'genders' => $genders,
         ]);
     }
 
@@ -195,6 +206,7 @@ class EventController extends Controller
             'event_id' => 'required',
             'category_id' => 'required',
             'age_id' => 'required',
+            'gender' => 'required',
             'price' => 'required',
         ]);
 
@@ -217,6 +229,229 @@ class EventController extends Controller
         return back()->with('success', 'Data Berhasil Dihapus');
     }
 
+    public function category(Event $event) {
+        $title = 'Delete Data!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
 
+        $categories = Category::where('event_id', $event->event_id)->get();
+
+        return view('admin.event.category.index' , [
+            'categories' => $categories,
+            'event' => $event
+        ]);
+    }
+
+    public function categoryCreate(Event $event) {
+        $types = [
+            [
+                "type" => "Tanding"
+            ],
+            [
+                "type" => "Seni"
+            ],
+        ];
+
+        $amounts = [
+            [
+                "type" => "Single"
+            ],
+            [
+                "type" => "Double"
+            ],
+            [
+                "type" => "Group"
+            ],
+        ];
+
+        return view('admin.event.category.create', [
+            'types' => $types,
+            'event' => $event,
+            'amounts' => $amounts,
+        ]);
+    }
+
+    public function categoryStore(Request $request) {
+        $validatedData = $request->validate([
+            'event_id' => 'required',
+            'category_name' => 'required|max:255',
+            'category_type' => 'required',
+            'category_amount' => 'required',
+        ]);
+
+        Category::create($validatedData);
+
+        return redirect('/adminEvent/category/'. $validatedData['event_id'])->with('success', 'Data Berhasil Disimpan');
+    }
+
+    public function categoryEdit(Category $category) {
+
+        $types = [
+            [
+                "type" => "Tanding"
+            ],
+            [
+                "type" => "Seni"
+            ],
+        ];
+
+        $amounts = [
+            [
+                "type" => "Single"
+            ],
+            [
+                "type" => "Double"
+            ],
+            [
+                "type" => "Group"
+            ],
+        ];
+
+        $event = Event::where('event_id', $category->event_id)->first();
+
+        
+        return view('admin.event.category.edit' , [
+            'event' => $event,
+            'category' => $category,
+            'types' => $types,
+            'amounts' => $amounts
+        ]);
+    }
+
+    public function categoryUpdate(Request $request, Category $category) {
+        $validatedData = $request->validate([
+            'event_id' => 'required',
+            'category_name' => 'required|max:255',
+            'category_type' => 'required',
+            'category_amount' => 'required',
+        ]);
+
+        Category::where('category_id', $category->category_id)->update($validatedData);
+
+        return redirect('/adminEvent/category/'. $validatedData['event_id'])->with('success', 'Data Berhasil Disimpan');        
+    }
+
+    public function categoryDestroy(Category $category) {
+
+        try{
+            Category::where('category_id', $category->category_id)->delete();
+        } catch (\Illuminate\Database\QueryException){
+            return back()->with([
+                'error' => 'Data cannot be deleted, because the data is still needed!',
+            ]);
+        }
+
+        return back()->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function age(Event $event) {
+        $title = 'Delete Data!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+
+        $ages = Age::where('event_id', $event->event_id)->get();
+
+        return view('admin.event.age.index', [
+            'event' => $event,
+            'ages' => $ages,
+        ]);
+    }
+
+    public function ageCreate(Event $event) {
+        return view('admin.event.age.create', [
+            'event' => $event
+        ]);
+    }
+
+    public function ageStore(Request $request) {
+        $validatedData = $request->validate([
+            'event_id' => 'required',
+            'age_name' => 'required|max:255',
+        ]);
+
+        Age::create($validatedData);
+
+        return redirect('/adminEvent/age/'. $validatedData['event_id'])->with('success', 'Data saved successfully');
+        
+    }
+
+    public function ageEdit(Age $age) {
+
+        $event = Event::where('event_id', $age->event_id)->first();
+
+        return view('admin.event.age.edit', [
+            'event' => $event,
+            'age' => $age
+        ]);
+    }
+
+    public function ageUpdate(Request $request, Age $age) {
+        $validatedData = $request->validate([
+            'event_id' => 'required',
+            'age_name' => 'required|max:255',
+        ]);
+
+        Age::where('age_id', $age->age_id)->update($validatedData);
+
+        return redirect('/adminEvent/age/'. $validatedData['event_id'])->with('success', 'Data updated successfully');
+        
+    }
+
+    public function ageDestroy(Age $age) {
+
+        try{
+            Age::where('age_id', $age->age_id)->delete();
+        } catch (\Illuminate\Database\QueryException){
+            return back()->with([
+                'error' => 'Data cannot be deleted, because the data is still needed!',
+            ]);
+        }
+
+        return back()->with('success', 'Data Berhasil Dihapus');
+    }
+
+    public function ageDetail(Age $age) {
+        $title = 'Delete Data!';
+        $text = "Are you sure you want to delete?";
+        confirmDelete($title, $text);
+
+
+        $classes = Matchclass::where('age_id', $age->age_id)->get();
+        $event = Event::where('event_id', $age->event_id)->first();
+
+
+        return view('admin.event.age.detail', [
+            'event' => $event,
+            'age' => $age,
+            'classes' => $classes,
+        ]);
+    }
+    
+    public function classStore(Request $request) {
+        $validatedData = $request->validate([
+            'age_id' => 'required',
+            'class_name' => 'required',
+            'class_min' => 'required',
+            'class_max' => 'required',
+        ]);
+
+        Matchclass::create($validatedData);
+        
+        return back()->with('success', 'Data saved successfully');
+
+    }
+
+    public function classDestroy(Matchclass $matchclass) {
+
+        try{
+            Matchclass::where('class_id', $matchclass->class_id)->delete();
+        } catch (\Illuminate\Database\QueryException){
+            return back()->with([
+                'error' => 'Data cannot be deleted, because the data is still needed!',
+            ]);
+        }
+
+        return back()->with('success', 'Data removed successfully');
+    }
     
 }

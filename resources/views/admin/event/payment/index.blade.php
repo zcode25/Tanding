@@ -40,8 +40,9 @@
             <thead>
             <tr>
               <th>Tanggal Pembayaran</th>
-              <th>Nama</th>
+              <th>Nama Official</th>
               <th>Kontingen</th>
+              <th>Metode Pembayaran</th>
               <th>Biaya Perndafataran</th>
               {{-- <th>Bukti Transfer</th> --}}
               <th>Status</th>
@@ -54,6 +55,7 @@
                     <td>{{ $payment->created_at }}</td>
                     <td>{{ $payment->contingent->user->name }}</td>
                     <td>{{ $payment->contingent->contingent_name }}</td>
+                    <td>{{ $payment->paymentmethod->bank_name }} - {{ $payment->paymentmethod->account_number }} - {{ $payment->paymentmethod->account_holder }}</td>
                     <td>Rp {{  number_format($payment->amount, 0, ',', '.') }}</td>
                     <td>{{ $payment->status }}</td>
                     <td class="py-0 align-middle">

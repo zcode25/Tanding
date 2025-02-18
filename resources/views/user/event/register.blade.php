@@ -68,6 +68,7 @@
                     </div>
     
                     <p id="selectedAgeId" class="d-none"></p>
+                    <input type="hidden" name="gender" id="selectedGender">
     
                     <div id="classDropdownContainer" class="form-group d-none">
                       <label for="class_id" class="form-label">Kelas <span class="text-danger">*</span></label>
@@ -87,9 +88,9 @@
                             <option value=""></option>
                             @foreach ($athletes as $athlete)
                               @if (old('athlete_id_1') == $athlete->athlete_id)
-                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</option>
                               @else
-                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</option>
                               @endif
                             @endforeach
                           </select>
@@ -104,9 +105,9 @@
                             <option value=""></option>
                             @foreach ($athletes as $athlete)
                               @if (old('athlete_id_2') == $athlete->athlete_id)
-                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</option>
                               @else
-                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</option>
                               @endif
                             @endforeach
                           </select>
@@ -121,9 +122,9 @@
                             <option value=""></option>
                             @foreach ($athletes as $athlete)
                               @if (old('athlete_id_3') == $athlete->athlete_id)
-                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}" selected>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</option>
                               @else
-                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg - {{ $athlete->age->age_name }})</option>
+                                <option value="{{ $athlete->athlete_id }}">{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</option>
                               @endif
                             @endforeach
                           </select>
@@ -173,6 +174,7 @@
                   <th>Atlet</th>
                   <th>Kategori Pertandingan</th>
                   <th>Kategori Umur</th>
+                  <th>Jenis Kelamin</th>
                   <th>Kelas</th>
                   <th>Harga</th>
                   @if (!isset($payment->status))
@@ -185,16 +187,19 @@
                     <tr>
                       <td>{{ $index + 1 }}</td>
                       <td>
-                        <ul style="margin: 0; padding: 0;">
+                        <ul style="margin: 0; padding: 0; list-style-type: none;">
                           @foreach ($register->athletes as $athlete)
-                              <li>{{ $athlete->athlete_name ?? 'N/A' }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</li>
+                              <li style="position: relative; padding-left: 15px;">
+                                  <span style="position: absolute; left: 0;">-</span> {{ $athlete->athlete_name }}
+                              </li>
                           @endforeach
                         </ul>
                       </td>
                       <td>{{ $register->category->category_name ?? 'N/A' }}</td>
                       <td>{{ $register->age->age_name ?? 'N/A' }}</td>
+                      <td>{{ $register->gender ?? 'N/A' }}</td>
                       @if (isset($register->matchClass))
-                        <td>{{ $register->matchClass->class_name }} - {{ $register->matchClass->class_min }}Kg s/d {{ $register->matchClass->class_max }}Kg ({{ $register->matchClass->class_gender }})</td>
+                        <td>{{ $register->matchClass->class_name }} ({{ $register->matchClass->class_min }}Kg s/d {{ $register->matchClass->class_max }}Kg)</td>
                       @else
                         <td>-</td>
                       @endif
@@ -257,50 +262,55 @@
   <!-- /.content-wrapper -->
 
 
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const categoryDropdown = document.getElementById('category_id');
-        const selectedCategoryId = document.getElementById('selectedCategoryId');
-        const ageDropdown = document.getElementById('age_id'); // Dropdown untuk age
-        
-        categoryDropdown.addEventListener('change', function () {
-            const selectedValue = this.value;
-            selectedCategoryId.innerText = `Selected Category ID: ${selectedValue}`;
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const categoryDropdown = document.getElementById('category_id');
+    const selectedCategoryId = document.getElementById('selectedCategoryId');
+    const ageDropdown = document.getElementById('age_id');
+    const selectedGender = document.getElementById('selectedGender'); // Tambahkan elemen untuk gender
 
-            if (selectedValue) {
-              // Kirim permintaan ke /ages/{category_id}
-              fetch(`/ages/${selectedValue}`)
-                  .then(response => {
-                      if (!response.ok) {
-                          throw new Error('Network response was not ok');
-                      }
-                      return response.json(); // Ubah respons ke format JSON
-                  })
-                  .then(data => {
-                      // Tampilkan data di konsol
-                      console.log('Data fetched:', data);
+    categoryDropdown.addEventListener('change', function () {
+        const selectedValue = this.value;
+        selectedCategoryId.innerText = `Selected Category ID: ${selectedValue}`;
 
-                      // Kosongkan dropdown age terlebih dahulu
-                      ageDropdown.innerHTML = '<option value="" disabled selected>Pilih Kategori Umur</option>';
+        if (selectedValue) {
+            fetch(`/ages/${selectedValue}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Data fetched:', data);
 
-                      // Tambahkan opsi baru berdasarkan data yang diterima
-                      data.forEach(age => {
-                          const option = document.createElement('option');
-                          option.value = age.age_id; // Sesuaikan dengan struktur data
-                          option.textContent = age.age_name; // Sesuaikan dengan struktur data
-                          ageDropdown.appendChild(option);
-                      });
-                  })
-                  .catch(error => {
-                      console.error('Error fetching age groups:', error);
-                      // Tampilkan pesan kesalahan jika diperlukan
-                  });
-          } else {
-              // Jika tidak ada kategori yang dipilih, kosongkan dropdown age
-              ageDropdown.innerHTML = '<option value="" disabled selected>Pilih Kategori Umur</option>';
-          }
-        });
+                    ageDropdown.innerHTML = '<option value="" disabled selected>Pilih Kategori Umur</option>';
+
+                    data.forEach(age => {
+                        const option = document.createElement('option');
+                        option.value = age.age_id;
+                        option.textContent = age.age_name;
+                        option.dataset.gender = age.gender; // Simpan gender sebagai dataset
+
+                        ageDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching age groups:', error);
+                });
+        } else {
+            ageDropdown.innerHTML = '<option value="" disabled selected>Pilih Kategori Umur</option>';
+        }
     });
+
+    // Tambahkan event listener untuk menangkap gender saat umur dipilih
+    ageDropdown.addEventListener('change', function () {
+        const selectedOption = ageDropdown.options[ageDropdown.selectedIndex];
+        if (selectedOption) {
+            selectedGender.value = selectedOption.dataset.gender; // Simpan gender dalam input tersembunyi
+        }
+    });
+});
 </script>
 
 <script>

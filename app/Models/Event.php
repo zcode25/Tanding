@@ -41,4 +41,9 @@ class Event extends Model
     {
         return $this->hasMany(Payment::class, 'event_id');
     }
+
+    public function brackets()
+    {
+        return $this->hasMany(Bracket::class, 'event_id', 'event_id');
+    }
 }

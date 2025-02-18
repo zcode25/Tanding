@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id('category_id')->primary();
+            $table->unsignedBigInteger('event_id');
+            $table->foreign('event_id')->references('event_id')->on('events')->onUpdate('cascade')->onDelete('restrict');
             $table->string('category_name');
             $table->string('category_type');
             $table->string('category_amount');

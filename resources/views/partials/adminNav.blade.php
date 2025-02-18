@@ -51,6 +51,14 @@
           </a>
         </li>
         <li class="nav-item">
+          <a href="/adminContingent" class="nav-link {{ Request::is('adminContingent*') ? 'active' : '' }}">
+            <i class="nav-icon fas fa fa-globe"></i>
+            <p>
+              Data Kontingen
+            </p>
+          </a>
+        </li>
+        <li class="nav-item">
           <a href="/adminAccount/{{ auth()->user()->id }}" class="nav-link {{ Request::is('adminAccount*') ? 'active' : '' }}">
             <i class="nav-icon fas fa fa-id-card"></i>
             <p>

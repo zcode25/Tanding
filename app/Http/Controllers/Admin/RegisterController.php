@@ -9,6 +9,8 @@ use App\Models\Register;
 use App\Models\Athlete;
 use App\Models\Competition;
 use App\Models\Category;
+use App\Exports\RegistersExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class RegisterController extends Controller
 {
@@ -42,12 +44,28 @@ class RegisterController extends Controller
         ->where('status', 'Match')
         ->get();
 
+
         return view('admin.event.register.detail', [
+            'competition' => $competition,
             'registers' => $registers,
             'category' => $category,
             'event' => $event,
         ]);
 
+    }
+
+    public function export(Competition $competition)
+    {
+        $event = Event::where('event_id', $competition->event_id)->first();
+        $category = Category::where('category_id', $competition->category_id)->first();
+
+        $registers = Register::with(['category', 'age', 'matchClass', 'athletes'])
+        ->where('event_id', $event->event_id)
+        ->where('category_id', $competition->category_id)
+        ->where('status', 'Match')
+        ->get();
+
+        return Excel::download(new RegistersExport($registers), 'registers.xlsx');
     }
 
     public function edit(Register $register) {

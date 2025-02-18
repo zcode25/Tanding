@@ -67,6 +67,23 @@
                     @enderror
                   </div>
 
+                  <div class=" form-group">
+                    <label for="gender" class="form-label">Jenis Kelamin <span class="text-danger">*</span></label>
+                    <select class="form-control select2bs4 @error('gender') is-invalid @enderror" id="gender" name="gender" data-placeholder="Pilih Jenis Kelamin">
+                      <option value=""></option>
+                      @foreach ($genders as $gender)
+                        @if (old('gender') == $gender['type'])
+                          <option value="{{ $gender['type'] }}" selected>{{ $gender['type'] }}</option>
+                        @else
+                          <option value="{{ $gender['type'] }}">{{ $gender['type'] }}</option>
+                        @endif
+                      @endforeach
+                    </select>
+                    @error('gender') 
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+
                   <div class="form-group">
                     <label for="price" class="form-label">Harga <span class="text-danger">*</span></label>
                     <input type="number" class="form-control @error('price') is-invalid @enderror" id="price" name="price" value="{{ old('price') }}">
@@ -108,6 +125,7 @@
                     <th>No</th>
                     <th>Kategori Pertandingan</th>
                     <th>Kategori Umur</th>
+                    <th>Jenis Kelamin</th>
                     <th>Harga</th>
                     <th>Aksi</th>
                   </tr>
@@ -121,6 +139,7 @@
                     <td>{{ $i++ }}</td>
                     <td>{{ $competition->category->category_name }} ({{ $competition->category->category_type }} - {{ $competition->category->category_amount }})</td>
                     <td>{{ $competition->age->age_name }}</td>
+                    <td>{{ $competition->gender }}</td>
                     <td>Rp {{ number_format($competition->price, 0, ',', '.') }}</td>
                     <td>
                       {{-- <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a> --}}

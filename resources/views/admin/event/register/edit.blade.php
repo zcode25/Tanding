@@ -67,10 +67,6 @@
                       <p>{{ $athlete->school_name }}</p>
                     </div>
                     <div class="mb-3">
-                      <p class="mb-2 font-weight-bold">Kategori Umur </p>
-                      <p>{{ $athlete->age->age_name }}</p>
-                    </div>
-                    <div class="mb-3">
                       <p class="mb-2 font-weight-bold">Foto Atlet </p>
                       @if ($athlete->athlete_photo)
                         <img class="w-full h-auto rounded-lg mt-3" src="{{ asset('storage/' . $athlete->athlete_photo) }}" alt="Photo" width="100">

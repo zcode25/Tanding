@@ -27,5 +27,15 @@ class Competition extends Model
     {
         return $this->belongsTo(Age::class, 'age_id');
     }
+
+    public function brackets()
+    {
+        return $this->hasMany(Bracket::class, 'competition_id', 'competition_id');
+    }
+
+    public function matchtgrs()
+    {
+        return $this->hasMany(Matchtgr::class, 'competition_id', 'competition_id');
+    }
     
 }

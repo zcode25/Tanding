@@ -7,18 +7,18 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <h1>Data Atlet</h1>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-8">
             <div class="float-sm-right">
 
               <div class="d-flex align-items-center">
                 <form action="/userAthlete/import" method="POST" enctype="multipart/form-data">
                   @csrf
-                  <div class="input-group  @error('banner_img') is-invalid @enderror">
+                  <div class="input-group  @error('file') is-invalid @enderror">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('banner_img') is-invalid @enderror" id="inputGroupFile04"name="file" aria-describedby="inputGroupFileAddon04">
+                      <input type="file" class="custom-file-input @error('file') is-invalid @enderror" id="inputGroupFile04"name="file" aria-describedby="inputGroupFileAddon04">
                       <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
                     </div>
                     <div class="input-group-append">
@@ -27,8 +27,8 @@
                   </div>
                 </form>
   
-                <a href="/userAthlete/template" class="btn btn-dark ml-2"> Template Excel</a>
-                <a href="/userAthlete/create" class="btn btn-primary ml-2">Tambah Data</a>
+                <a href="/userAthlete/template" class="btn btn-dark ml-2">Template Excel</a>
+                <a href="/userAthlete/create" class="btn btn-primary ml-2">Tambah Data<i class="fa fa-plus ml-2" aria-hidden="true"></i></a>
               </div>
   
             </div>
@@ -63,7 +63,6 @@
               <th>NIK</th>
               <th>Jenis Kelamin</th>
               <th>Tanggal Lahir</th>
-              <th>Kategori Umur</th>
               <th>Nama Sekolah</th>
               <th>Berat Badan</th>
               <th>Aksi</th>
@@ -87,13 +86,12 @@
                 <td class="py-0 align-middle">{{ $athlete->nik }}</td>
                 <td class="py-0 align-middle">{{ $athlete->athlete_gender }}</td>
                 <td class="py-0 align-middle">{{ $athlete->date_birth }}</td>
-                <td class="py-0 align-middle">{{ $athlete->age->age_name }}</td>
                 <td class="py-0 align-middle">{{ $athlete->school_name }}</td>
                 <td class="py-0 align-middle">{{ $athlete->weight }} Kg</td>
                 
                 <td class="py-0 align-middle">
-                    <a href="/userAthlete/edit/{{ $athlete->athlete_id }}" class="btn btn-primary btn-sm"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                    <a href="/userAthlete/destroy/{{ $athlete->athlete_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                    <a href="/userAthlete/edit/{{ $athlete->athlete_id }}" class="btn btn-primary btn-sm">Ubah<i class="fa fa-pencil ml-2" aria-hidden="true"></i></a>
+                    <a href="/userAthlete/destroy/{{ $athlete->athlete_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus<i class="fa fa-trash ml-2" aria-hidden="true"></i></a>
                 </td>
               </tr>    
               @endforeach

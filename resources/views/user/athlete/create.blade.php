@@ -53,7 +53,7 @@
                             @endif
                           @endforeach
                         </select>
-                        @error('gender') 
+                        @error('athlete_gender') 
                           <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                       </div>
@@ -103,23 +103,6 @@
                         <label for="school_name" class="form-label">Nama Sekolah <span class="text-danger">*</span></label>
                         <input type="text" class="form-control @error('school_name') is-invalid @enderror" id="school_name" name="school_name" value="{{ old('school_name') }}">
                         @error('school_name') 
-                          <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                      </div>
-    
-                      <div class=" form-group">
-                        <label for="age_id" class="form-label">Kategori Umur <span class="text-danger">*</span></label>
-                        <select class="form-control select2bs4 @error('age_id') is-invalid @enderror" id="age_id" name="age_id" data-placeholder="Pilih Kategori Umur">
-                          <option value=""></option>
-                          @foreach ($ages as $age)
-                            @if (old('age_id') == $age->age_id)
-                              <option value="{{ $age->age_id }}" selected>{{ $age->age_name }}</option>
-                            @else
-                              <option value="{{ $age->age_id }}">{{ $age->age_name }}</option>
-                            @endif
-                          @endforeach
-                        </select>
-                        @error('age_id') 
                           <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                       </div>

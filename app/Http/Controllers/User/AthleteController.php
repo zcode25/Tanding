@@ -37,26 +37,25 @@ class AthleteController extends Controller
 
     public function downloadTemplate()
     {
-        // Ambil data Age ID dan Age Name dari tabel Ages
-        $ages = Age::select('age_id', 'age_name')->get();
-        $ageDropdown = $ages->map(function ($age) {
-            return "{$age->age_id} - {$age->age_name}";
-        })->implode(',');
+        
+        // $ages = Age::select('age_id', 'age_name')->get();
+        // $ageDropdown = $ages->map(function ($age) {
+        //     return "{$age->age_id} - {$age->age_name}";
+        // })->implode(',');
     
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
     
         // Header Titles
         $headers = [
-            'A1' => 'Athlete Name',
-            'B1' => 'Athlete Gender',
-            'C1' => 'Date of Birth (YYYY-MM-DD)',
-            'D1' => 'Place of Birth',
-            'E1' => 'NIK (ID Number)',
-            'F1' => 'Weight (kg)',
-            'G1' => 'Height (cm)',
-            'H1' => 'School Name',
-            'I1' => 'Age ID - Age Name',
+            'A1' => 'Nama',
+            'B1' => 'Jenis Kelamin',
+            'C1' => 'Tanggal Lahir (YYYY-MM-DD)',
+            'D1' => 'Tempat Lahir',
+            'E1' => 'NIK',
+            'F1' => 'Berat (Kg)',
+            'G1' => 'Tinggi (Cm)',
+            'H1' => 'Nama Sekolah',
         ];
     
         // Styling for Header
@@ -85,10 +84,10 @@ class AthleteController extends Controller
         foreach ($headers as $cell => $text) {
             $sheet->setCellValue($cell, $text);
         }
-        $sheet->getStyle('A1:I1')->applyFromArray($headerStyle);
+        $sheet->getStyle('A1:H1')->applyFromArray($headerStyle);
     
         // Auto-size Columns
-        foreach (range('A', 'I') as $column) {
+        foreach (range('A', 'H') as $column) {
             $sheet->getColumnDimension($column)->setAutoSize(true);
         }
     
@@ -100,7 +99,6 @@ class AthleteController extends Controller
         $sheet->setCellValue('F2', 60);
         $sheet->setCellValue('G2', 175);
         $sheet->setCellValue('H2', 'High School Jakarta');
-        $sheet->setCellValue('I2', $ages->first() ? "{$ages->first()->age_id} - {$ages->first()->age_name}" : '');
     
         // Add Dropdown for Athlete Gender
         $genderValidation = $sheet->getCell('B2')->getDataValidation();
@@ -122,21 +120,6 @@ class AthleteController extends Controller
 
         
     
-        // Add Dropdown for Age ID - Age Name
-        $ageValidation = $sheet->getCell('I2')->getDataValidation();
-        $ageValidation->setType(DataValidation::TYPE_LIST);
-        $ageValidation->setErrorStyle(DataValidation::STYLE_STOP);
-        $ageValidation->setAllowBlank(false);
-        $ageValidation->setShowInputMessage(true);
-        $ageValidation->setShowErrorMessage(true);
-        $ageValidation->setShowDropDown(true);
-        $ageValidation->setFormula1('"' . $ageDropdown . '"'); // Dynamic Age IDs with Names
-    
-        // Apply dropdown validation for multiple rows (I2 to I100)
-        foreach (range(2, 100) as $row) {
-            $sheet->getCell("I$row")->setDataValidation(clone $ageValidation);
-        }
-    
         // Menambahkan border untuk semua sel dari A1 hingga I100
         $borderStyle = [
             'borders' => [
@@ -146,7 +129,7 @@ class AthleteController extends Controller
                 ],
             ],
         ];
-        $sheet->getStyle('A1:I100')->applyFromArray($borderStyle);
+        $sheet->getStyle('A1:H100')->applyFromArray($borderStyle);
     
         // File Name
         $fileName = 'Athlete_Template.xlsx';
@@ -198,12 +181,8 @@ class AthleteController extends Controller
             ],
         ];
 
-
-        $ages = Age::all();
-
         return view('user.athlete.create', [
             'genders' => $genders,
-            'ages' => $ages,
         ]);
 
     }
@@ -219,7 +198,6 @@ class AthleteController extends Controller
             'weight' => 'required',
             'height' => 'required',
             'school_name' => 'required',
-            'age_id' => 'required',
             'athlete_photo' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 
@@ -245,12 +223,9 @@ class AthleteController extends Controller
             ],
         ];
 
-        $ages = Age::all();
-
         return view('user.athlete.edit', [
             'athlete' => $athlete,
             'genders' => $genders,
-            'ages' => $ages,
         ]);
     }
 
@@ -265,7 +240,6 @@ class AthleteController extends Controller
             'weight' => 'required',
             'height' => 'required',
             'school_name' => 'required',
-            'age_id' => 'required',
             'athlete_photo' => 'file|mimes:jpg,jpeg,png|max:2048',
         ]);
 

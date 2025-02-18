@@ -7,14 +7,10 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1>Pengundian</h1>
+          <div class="col-sm-4">
+              <h1 class="mb-2">Pengundian Peserta</h1>
+              <p>{{ $category->category_name }} / {{ $age->age_name }} / {{ $competition->gender }} / {{ $matchclass->class_name }} ({{ $matchclass->class_min }}Kg s/d {{ $matchclass->class_max }}Kg)</p>
           </div>
-          {{-- <div class="col-sm-6">
-            <div class="float-sm-right">
-
-            </div>
-          </div> --}}
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -26,10 +22,10 @@
       
 
       <div class="row">
-        {{-- <div class="col-xl-6">
+        <div class="col-xl-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Pengundian {{ $category_name }} / {{ $age_name }} / {{ $class_name }}</h3>
+              <h3 class="card-title">Pengundian Peserta</h3>
     
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -42,120 +38,50 @@
               
               <table id="example1" class="table table-hover">
                 <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Atlet</th>
-                  <th>Kontingen</th>
-                </tr>
+                    <tr>
+                        <th>Nomor Undian</th>
+                        <th>Atlet</th>
+                        <th>Kontingen</th>
+                        <th>Kategori Pertandingan</th>
+                        <th>Kategori Umur</th>
+                        <th>Jenis Kelamin</th>
+                        @if ($category->category_type == 'Tanding')
+                        <th>Kelas</th>
+                        @endif
+                        
+                    </tr>
                 </thead>
                 <tbody>
-                  @foreach ($registers as $index => $register)
-                  <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>
-                      <ul style="margin: 0; padding: 0;">
-                        @foreach ($register->athletes as $athlete)
-                            <li>{{ $athlete->athlete_name }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</li>
-                        @endforeach
-                      </ul>
-                    </td>
-                    <td>{{ $register->contingent->contingent_name ?? 'N/A' }}</td>
-                  </tr>
-                  @endforeach
-                </tfoot>
+                    @foreach ($participants as $index => $participant)
+                        <tr>
+                          <td id="draw-{{ $participant->participant_id }}" class="text-center h5 text-bold">
+                            {{ $participant->draw_number ?? '-' }}
+                          </td>
+                            <td>
+                                @php
+                                    $athletes = json_decode($participant->athlete_name, true);
+                                @endphp
+                                @if (is_array($athletes))
+                                    {{ implode(', ', $athletes) }}
+                                @else
+                                    {{ $participant->athlete_name }}
+                                @endif
+                            </td>
+                            <td>{{ $participant->contingent_name }}</td>
+                            <td>{{ $participant->category->category_name }}</td>
+                            <td>{{ $participant->age->age_name }}</td>
+                            <td>{{ $participant->gender }}</td>
+                            @if ($category->category_type == 'Tanding')
+                                <td>{{ $participant->matchclass->class_name }} ({{ $participant->matchclass->class_min }}Kg s/d {{ $participant->matchclass->class_max }}Kg)</td>
+                            @endif
+                        </tr>
+                    @endforeach
+                    <button id="draw-button" class="btn btn-primary">Pengundian Peserta <i class="fa fa-random mr-2" aria-hidden="true"></i></button>
+                    <button id="save-button" class="btn btn-dark ml-2" disabled>Simpan</button>
+                    <a href="/adminDraw/draw/tandingExport/{{ $competition->competition_id }}/{{ $matchclass->class_id }}" class="btn btn-success ml-2">Download</a>
+                </tbody>
               </table>
             </div>
-            <!-- /.card-body -->
-          </div>
-        </div> --}}
-        <div class="col-xl-6">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Pengundian {{ $category_name }} / {{ $age_name }} / {{ $class_name }}</h3>
-    
-              <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                  <i class="fas fa-minus"></i>
-                </button>
-              </div>
-            </div>
-            
-            <div class="card-body">
-              <div class="text-center mb-3">
-                @if (count($draws) > 0)
-                <form action="/adminDraw/tandingDraw/reshuffle" method="POST" class="form-horizontal d-inline">
-                  @csrf
-                  <input type="hidden" id="event_id" name="event_id" value="{{ $event->event_id }}">
-                  <input type="hidden" id="category_id" name="category_id" value="{{ $category_id }}">
-                  <input type="hidden" id="age_id" name="age_id" value="{{ $age_id }}">
-                  <input type="hidden" id="class_id" name="class_id" value="{{ $class_id }}">
-                  <button type="submit" name="submit" class="btn btn-dark">Pengacakan Ulang Peserta <i class="fa fa-random ml-2" aria-hidden="true"></i></button>
-                </form>
-                @else
-                <form action="/adminDraw/tandingDraw/store" method="POST" class="form-horizontal">
-                  @csrf
-                  <input type="hidden" id="event_id" name="event_id" value="{{ $event->event_id }}">
-                  <input type="hidden" id="category_id" name="category_id" value="{{ $category_id }}">
-                  <input type="hidden" id="age_id" name="age_id" value="{{ $age_id }}">
-                  <input type="hidden" id="class_id" name="class_id" value="{{ $class_id }}">
-                  <button type="submit" name="submit" class="btn btn-primary">Pangacakan Perserta <i class="fa fa-random ml-2" aria-hidden="true"></i></button>
-                </form>
-                @endif
-                
-
-                
-              </div>
-              
-              <hr>
-
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th>No Undian</th>
-                  <th>Atlet</th>
-                  <th>Kontingen</th>
-                </tr>
-                </thead>
-                <tbody>
-                  @foreach ($draws as $index => $draw)
-                  <tr>
-                      <td>
-                          <form action="/adminDraw/tandingDraw/update/{{ $draw->draw_id }}" method="POST">
-                              @csrf
-                              @method('PATCH')
-                              <input 
-                                  type="number"
-                                  name="draw_number" 
-                                  value="{{ $draw->draw_number }}" 
-                                  style="width: 50px;" 
-                              />
-                              <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                          </form>
-                      </td>
-                      <td>
-                          <ul style="margin: 0; padding: 0;">
-                              @foreach ($draw->register->registerAthletes as $registerAthlete)
-                                  @if ($registerAthlete->athlete)
-                                      <li>
-                                          {{ $registerAthlete->athlete->athlete_name ?? 'N/A' }} 
-                                          ({{ $registerAthlete->athlete->athlete_gender ?? 'N/A' }} - 
-                                          {{ $registerAthlete->athlete->weight ?? 'N/A' }}Kg)
-                                      </li>
-                                  @else
-                                      <li>N/A</li>
-                                  @endif
-                              @endforeach
-                          </ul>
-                      </td>
-                      <td>{{ $draw->register->contingent->contingent_name ?? 'N/A' }}</td>
-                  </tr>
-                  @endforeach
-                </tfoot>
-              </table>
-            </div>
-
-
-
             <!-- /.card-body -->
           </div>
         </div>
@@ -166,5 +92,94 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+      let drawCount = 0; 
+      let drawResults = {}; // Menyimpan hasil drawing sementara
+      
+      $(document).ready(function() {
+          $('#draw-button').click(function() {
+              // if (drawCount >= 3) {
+              //     alert("Maksimal drawing 3 kali!");
+              //     return;
+              // }
+  
+              let participants = @json($participants);
+              let shuffled = shuffleArray(participants);
+              drawResults = {}; // Reset hasil drawing sementara
+              
+              // Animasikan setiap row
+              let i = 1;
+              shuffled.forEach((participant, index) => {
+                  let participantId = participant.participant_id;
+                  let drawCell = $(`#draw-${participantId}`);
+                  let isDrawnCell = $(`#is_drawn-${participantId}`);
+  
+                  // Animasi Rolling Number
+                  let counter = 0;
+                  let interval = setInterval(() => {
+                      drawCell.text(Math.floor(Math.random() * 100)); // Acak angka sementara
+                      counter++;
+                      if (counter > 10) {
+                          clearInterval(interval);
+                          drawCell.text(i); // Set nilai akhir
+                          drawResults[participantId] = i; // Simpan hasil sementara
+                          i++;
+                      }
+                  }, 100);
+                  
+                  isDrawnCell.text('Yes'); // Update status draw
+              });
+  
+              drawCount++;
+              $('#save-button').prop('disabled', false); // Aktifkan tombol Save
+          });
+  
+          $('#save-button').click(function() {
+              $.ajax({
+                  url: "{{ route('draw.save') }}",
+                  method: "POST",
+                  data: {
+                      _token: "{{ csrf_token() }}",
+                      results: drawResults
+                  },
+                  success: function(response) {
+                      // Use SweetAlert for success message
+                      Swal.fire({
+                          icon: 'success',
+                          title: 'Drawing berhasil disimpan!',
+                          text: 'Hasil undian telah berhasil disimpan.',
+                          confirmButtonText: 'OK'
+                      }).then(function() {
+                          // Reload the page after SweetAlert is closed
+                          window.location.reload();
+                      });
+                      $('#save-button').prop('disabled', true);
+                  },
+                  error: function() {
+                      // Use SweetAlert for error message
+                      Swal.fire({
+                          icon: 'error',
+                          title: 'Terjadi kesalahan!',
+                          text: 'Coba lagi nanti.',
+                          confirmButtonText: 'OK'
+                      });
+                  }
+              });
+          });
+  
+      });
+  
+      function shuffleArray(array) {
+          let shuffled = array.slice();
+          for (let i = shuffled.length - 1; i > 0; i--) {
+              let j = Math.floor(Math.random() * (i + 1));
+              [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+          return shuffled;
+      }
+  </script>
+  
 
 @endsection

@@ -23,8 +23,6 @@ return new class extends Migration
             $table->integer('weight');
             $table->integer('height');
             $table->string('school_name');
-            $table->unsignedBigInteger('age_id');
-            $table->foreign('age_id')->references('age_id')->on('ages')->onUpdate('cascade')->onDelete('restrict');
             $table->string('athlete_photo')->nullable();
             $table->timestamps();
         });

@@ -33,4 +33,19 @@ class Draw extends Model
         return $this->belongsTo(Register::class, 'register_id', 'register_id');
     }
 
+    public function blueCornerMatchtandings()
+    {
+        return $this->hasMany(Matchtanding::class, 'blue_corner', 'draw_id');
+    }
+
+    public function redCornerMatchtandings()
+    {
+        return $this->hasMany(Matchtanding::class, 'red_corner', 'draw_id');
+    }
+
+    public function winnerMatchtandings()
+    {
+        return $this->hasMany(Matchtanding::class, 'winner', 'draw_id');
+    }
+
 }

@@ -76,7 +76,7 @@
                   </div>
                   <hr>
                   @if (count($administrators) > 0)
-                  <table class="table table-sm">
+                  <table class="table table-hover">
                     <thead>
                       <tr>
                         <th>No</th>

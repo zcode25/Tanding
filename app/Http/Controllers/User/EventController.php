@@ -16,6 +16,7 @@ use App\Models\Payment;
 use App\Models\Paymentmethod;
 use App\Models\Registerathlete;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf as DomPDF;
 
 
 class EventController extends Controller
@@ -74,25 +75,23 @@ class EventController extends Controller
 
     public function getAges($category_id)
     {
-        // Ambil data competition berdasarkan category_id dan muat relasi 'age'
         $competition = Competition::where('category_id', $category_id)->first();
         $event_id = $competition->event_id;
 
 
         $ages = Competition::where('category_id', $category_id)
             ->where('event_id', $event_id)
-            ->with('age')  // Muat relasi 'age' pada model Competition
+            ->with('age')
             ->get();
     
-        // Ambil hanya data yang dibutuhkan: age_id dan age_name dari tabel ages
         $ageData = $ages->map(function ($competition) {
             return [
                 'age_id' => $competition->age->age_id,
-                'age_name' => $competition->age->age_name,
+                'age_name' => $competition->age->age_name . ' - ' . $competition->gender,
+                'gender' => $competition->gender,
             ];
         });
     
-        // Mengembalikan data dalam format JSON
         return response()->json($ageData);
     }
 
@@ -105,11 +104,10 @@ class EventController extends Controller
         $classData = $class->map(function ($class) {
             return [
                 'class_id' => $class->class_id,
-                'class_name' => $class->class_name . ' - ' . $class->class_min . 'Kg s/d ' . $class->class_max . 'Kg ('. $class->class_gender . ')',
+                'class_name' => $class->class_name . ' - ' . $class->class_min . 'Kg s/d ' . $class->class_max . 'Kg',
             ];
         });
     
-        // Mengembalikan data dalam format JSON
         return response()->json($classData);
     }
 
@@ -133,6 +131,7 @@ class EventController extends Controller
             'event_id' => 'required',
             'category_id' => 'required',
             'age_id' => 'required',
+            'gender' => 'required',
             'class_id' => [
                 'nullable',
                 Rule::requiredIf(function () use ($request) {
@@ -154,33 +153,6 @@ class EventController extends Controller
                 ]);
             }
 
-            $athlete_id = $validatedData['athlete_id'][0];
-            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
-
-            if($validatedData['age_id'] != $athlete->age_id) {
-                return back()->with([
-                    'error' => 'Atlet kategori umur tidak sesuai',
-                ]);
-            } 
-
-            if(isset($validatedData['class_id'])) {
-
-                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
-               
-                if($class->class_gender != $athlete->athlete_gender) {
-                    return back()->with([
-                        'error' => 'Jenis kelamin Atlet tidak sesuai',
-                    ]);
-                } 
-
-                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
-                    return back()->with([
-                        'error' => 'Berat atlet tidak sesuai dengan kelas',
-                    ]);
-                }
-
-            }
-
 
         } else if ($category->category_amount == 'Double') {
             if($validatedData['athlete_id'][0] == null) {
@@ -189,65 +161,13 @@ class EventController extends Controller
                 ]);
             }
 
-            $athlete_id = $validatedData['athlete_id'][0];
-            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
-
-            if($validatedData['age_id'] != $athlete->age_id) {
-                return back()->with([
-                    'error' => 'Atlet kategori umur tidak sesuai',
-                ]);
-            } 
-
-            if(isset($validatedData['class_id'])) {
-
-                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
-               
-                if($class->class_gender != $athlete->athlete_gender) {
-                    return back()->with([
-                        'error' => 'Jenis kelamin Atlet tidak sesuai',
-                    ]);
-                } 
-
-                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
-                    return back()->with([
-                        'error' => 'Berat atlet tidak sesuai dengan kelas',
-                    ]);
-                }
-
-            }
-
             if($validatedData['athlete_id'][1] == null) {
                 return back()->with([
                     'error' => 'Athlete belum dimasukan',
                 ]);
             }
 
-            $athlete_id = $validatedData['athlete_id'][1];
-            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
 
-            if($validatedData['age_id'] != $athlete->age_id) {
-                return back()->with([
-                    'error' => 'Atlet kategori umur tidak sesuai',
-                ]);
-            } 
-
-            if(isset($validatedData['class_id'])) {
-
-                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
-               
-                if($class->class_gender != $athlete->athlete_gender) {
-                    return back()->with([
-                        'error' => 'Jenis kelamin Atlet tidak sesuai',
-                    ]);
-                } 
-
-                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
-                    return back()->with([
-                        'error' => 'Berat atlet tidak sesuai dengan kelas',
-                    ]);
-                }
-
-            }
         } else if ($category->category_amount == 'Group') {
             if($validatedData['athlete_id'][0] == null) {
                 return back()->with([
@@ -255,64 +175,10 @@ class EventController extends Controller
                 ]);
             }
 
-            $athlete_id = $validatedData['athlete_id'][0];
-            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
-
-            if($validatedData['age_id'] != $athlete->age_id) {
-                return back()->with([
-                    'error' => 'Atlet kategori umur tidak sesuai',
-                ]);
-            } 
-
-            if(isset($validatedData['class_id'])) {
-
-                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
-               
-                if($class->class_gender != $athlete->athlete_gender) {
-                    return back()->with([
-                        'error' => 'Jenis kelamin Atlet tidak sesuai',
-                    ]);
-                } 
-
-                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
-                    return back()->with([
-                        'error' => 'Berat atlet tidak sesuai dengan kelas',
-                    ]);
-                }
-
-            }
-
             if($validatedData['athlete_id'][1] == null) {
                 return back()->with([
                     'error' => 'Athlete belum dimasukan',
                 ]);    
-            }
-
-            $athlete_id = $validatedData['athlete_id'][1];
-            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
-
-            if($validatedData['age_id'] != $athlete->age_id) {
-                return back()->with([
-                    'error' => 'Atlet kategori umur tidak sesuai',
-                ]);
-            } 
-
-            if(isset($validatedData['class_id'])) {
-
-                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
-            
-                if($class->class_gender != $athlete->athlete_gender) {
-                    return back()->with([
-                        'error' => 'Jenis kelamin Atlet tidak sesuai',
-                    ]);
-                } 
-
-                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
-                    return back()->with([
-                        'error' => 'Berat atlet tidak sesuai dengan kelas',
-                    ]);
-                }
-
             }
 
 
@@ -323,38 +189,9 @@ class EventController extends Controller
 
             }
 
-            $athlete_id = $validatedData['athlete_id'][2];
-            $athlete = Athlete::where('athlete_id', $athlete_id)->first();
-
-            if($validatedData['age_id'] != $athlete->age_id) {
-                return back()->with([
-                    'error' => 'Atlet kategori umur tidak sesuai',
-                ]);
-            } 
-
-            if(isset($validatedData['class_id'])) {
-
-                $class = Matchclass::where('class_id', $validatedData['class_id'])->first();
-            
-                if($class->class_gender != $athlete->athlete_gender) {
-                    return back()->with([
-                        'error' => 'Jenis kelamin Atlet tidak sesuai',
-                    ]);
-                } 
-
-                if ($athlete->weight < $class->class_min || $athlete->weight > $class->class_max) {
-                    return back()->with([
-                        'error' => 'Berat atlet tidak sesuai dengan kelas',
-                    ]);
-                }
-
-            }
         }
 
-
-        
-
-        $competition = Competition::where('event_id', $validatedData['event_id'])->where('age_id', $validatedData['age_id'])->first();
+        $competition = Competition::where('event_id', $validatedData['event_id'])->where('category_id', $validatedData['category_id'])->where('age_id', $validatedData['age_id'])->first();
 
         $status = 'Register';
         $contingent = Contingent::where('user_id', auth()->user()->id)->first();
@@ -366,6 +203,7 @@ class EventController extends Controller
                 'event_id' => $validatedData['event_id'],
                 'category_id' => $validatedData['category_id'],
                 'age_id' => $validatedData['age_id'],
+                'gender' => $validatedData['gender'],
                 'class_id' => $validatedData['class_id'],
                 'contingent_id' => $contingent_id,
                 'price' => $competition->price,
@@ -376,6 +214,7 @@ class EventController extends Controller
                 'event_id' => $validatedData['event_id'],
                 'category_id' => $validatedData['category_id'],
                 'age_id' => $validatedData['age_id'],
+                'gender' => $validatedData['gender'],
                 'contingent_id' => $contingent_id,
                 'price' => $competition->price,
                 'status' => $status
@@ -463,6 +302,45 @@ class EventController extends Controller
             'payment' => $payment,
             'paymentmethods' => $paymentmethods,
         ]);
+    }
+
+
+    public function registerPaymentInvoice(Event $event) {
+        $contingent = Contingent::where('user_id', auth()->user()->id)->first();
+        $contingent_id = $contingent->contingent_id;
+
+        $registers = Register::with(['category', 'age', 'matchClass', 'athletes'])
+        ->where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->get();
+
+        $totalPrice = Register::where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->sum('price');
+
+        $payment = Payment::where('event_id', $event->event_id)
+        ->where('contingent_id', $contingent_id)
+        ->first();
+
+        $paymentmethods = Paymentmethod::all();
+        $uniqueCode = ($contingent_id + 111) % 1000;
+        $totalPayment = $totalPrice + $uniqueCode;
+
+
+
+        $pdf =  DomPDF::loadView('user.event.invoice', [
+            'event' => $event,
+            'contingent' => $contingent,
+            'registers' => $registers,
+            'payment' => $payment,
+            'totalPrice' => $totalPrice,
+            'uniqueCode' => $uniqueCode,
+            'totalPayment' => $totalPayment,
+            'paymentmethods' => $paymentmethods,
+        ]);
+
+        // Return file PDF untuk diunduh
+        return $pdf->stream("Invoice-{$contingent->contingent_name}.pdf");
     }
 
     public function registerPaymentStore(Request $request, Event $event) {

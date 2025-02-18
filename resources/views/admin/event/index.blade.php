@@ -40,7 +40,6 @@
             <thead>
             <tr>
               <th>Nama Perlombaan</th>
-              <th>Deskripsi</th>
               <th>Tanggal Dibuat</th>
               <th>Status</th>
               <th>Aksi</th>
@@ -50,7 +49,6 @@
               @foreach ($administrators as $administrator)
                 <tr>
                   <td>{{ $administrator->event->event_name }}</td>
-                  <td>{{ $administrator->event->event_desc}}</td>
                   <td>{{ $administrator->event->created_at->format('Y-m-d') }}</td>
                   <td>{{ $administrator->event->event_status }}</td>
                   <td class="py-0 align-middle">

@@ -16,7 +16,6 @@ return new class extends Migration
             $table->unsignedBigInteger('age_id');
             $table->foreign('age_id')->references('age_id')->on('ages')->onUpdate('cascade')->onDelete('restrict');
             $table->string('class_name');
-            $table->string('class_gender');
             $table->integer('class_min');
             $table->integer('class_max');
             $table->timestamps();

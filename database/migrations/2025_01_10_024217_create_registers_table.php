@@ -23,6 +23,7 @@ return new class extends Migration
             $table->foreign('class_id')->references('class_id')->on('matchclasses')->onUpdate('cascade')->onDelete('restrict');
             $table->unsignedBigInteger('contingent_id');
             $table->foreign('contingent_id')->references('contingent_id')->on('contingents')->onUpdate('cascade')->onDelete('restrict');
+            $table->string('gender');
             $table->integer('price');
             $table->string('status');
             $table->timestamps();

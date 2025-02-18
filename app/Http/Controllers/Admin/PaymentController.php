@@ -10,6 +10,7 @@ use App\Models\Information;
 use App\Models\Contingent;
 use App\Models\Register;
 use App\Models\Paymentmethod;
+use Barryvdh\DomPDF\Facade\Pdf as DomPDF;
 
 class PaymentController extends Controller
 {
@@ -61,6 +62,45 @@ class PaymentController extends Controller
             'payment' => $payment,
             'paymentmethods' => $paymentmethods,
         ]);
+    }
+
+    public function invoice(Payment $payment) {
+        $payment = Payment::where('payment_id', $payment->payment_id)->first();
+        $contingent_id = $payment->contingent_id;
+        $event_id = $payment->event_id;
+
+        $contingent = Contingent::where('contingent_id', $contingent_id)->first();
+        $event = Event::where('event_id', $event_id)->first();
+
+        $registers = Register::with(['category', 'age', 'matchClass', 'athletes'])
+        ->where('event_id', $event_id)
+        ->where('contingent_id', $contingent_id)
+        ->get();
+
+        $totalPrice = Register::where('event_id', $event_id)
+        ->where('contingent_id', $contingent_id)
+        ->sum('price');
+
+        $payment = Payment::where('event_id', $event_id)
+        ->where('contingent_id', $contingent_id)
+        ->first();
+
+        $uniqueCode = ($contingent_id + 111) % 1000;
+        $totalPayment = $totalPrice + $uniqueCode;
+        $paymentmethods = Paymentmethod::all();
+
+        $pdf =  DomPDF::loadView('admin.event.payment.invoice', [
+            'event' => $event,
+            'contingent' => $contingent,
+            'registers' => $registers,
+            'payment' => $payment,
+            'totalPrice' => $totalPrice,
+            'uniqueCode' => $uniqueCode,
+            'totalPayment' => $totalPayment,
+            'paymentmethods' => $paymentmethods,
+        ]);
+
+        return $pdf->stream("Invoice-{$contingent->contingent_name}.pdf");
     }
 
     public function store(Request $request, Payment $payment) {

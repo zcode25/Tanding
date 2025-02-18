@@ -22,4 +22,9 @@ class Age extends Model
     {
         return $this->hasMany(Athlete::class, 'age_id');
     }
+
+    public function matchclass()
+    {
+        return $this->hasOne(MatchClass::class, 'age_id', 'age_id');
+    }
 }

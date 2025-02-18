@@ -30,7 +30,12 @@
           <div class="col-12">
             <h4>
               <i class="fas fa-globe"></i> Tanding
-              <small class="float-right">Date: {{ now()->toDateString() }}</small>
+              
+              @if (isset($payment->status))
+                <small class="float-right">Date: {{ $payment->created_at->toDateString() }}</small>
+              @else
+                <small class="float-right">Date: {{ now()->toDateString() }}</small>
+              @endif
             </h4>
           </div>
           <!-- /.col -->
@@ -80,6 +85,7 @@
                 <th>Atlet</th>
                 <th>Kategori Pertandingan</th>
                 <th>Kategori Umur</th>
+                <th>Jenis Kelamin</th>
                 <th>Kelas</th>
                 <th>Harga</th>
               </tr>
@@ -89,18 +95,19 @@
                   <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>
-                      <ul style="margin: 0; padding: 0;">
+                      <ul style="margin: 0; padding: 0; list-style-type: none;">
                         @foreach ($register->athletes as $athlete)
-                        <li>
-                          {{ $athlete->athlete_name }}  ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)
-                        </li>
+                            <li style="position: relative; padding-left: 15px;">
+                                <span style="position: absolute; left: 0;">-</span> {{ $athlete->athlete_name }}
+                            </li>
                         @endforeach
                       </ul>
                     </td>
                     <td>{{ $register->category->category_name ?? 'N/A' }}</td>
                     <td>{{ $register->age->age_name ?? 'N/A' }}</td>
+                    <td>{{ $register->gender ?? 'N/A' }}</td>
                     @if (isset($register->matchClass))
-                      <td>{{ $register->matchClass->class_name }} - {{ $register->matchClass->class_min }}Kg s/d {{ $register->matchClass->class_max }}Kg ({{ $register->matchClass->class_gender }})</td>
+                      <td>{{ $register->matchClass->class_name }} ({{ $register->matchClass->class_min }}Kg s/d {{ $register->matchClass->class_max }}Kg)</td>
                     @else
                       <td>-</td>
                     @endif
@@ -152,40 +159,14 @@
               </table>
             </div>
           </div>
+          <div class="col-12 text-right p-3">
+            <a href="/adminPayment/invoice/{{ $payment->payment_id }}" target="_blank" class="btn btn-success">Cetak Invoice</a>
+          </div>
           <!-- /.col -->
         </div>
         <!-- /.row -->
 
         <!-- this row will not appear when printing -->
-        @if (!isset($payment->status))
-        <div class="row no-print ">
-          <div class="col-12">
-            {{-- <a href="invoice-print.html" rel="noopener" target="_blank" class="btn btn-default"><i class="fas fa-print"></i> Print</a> --}}
-            <form action="/userEvent/register/payment/store/{{ $event->event_id }}" method="POST" enctype="multipart/form-data"  class="form-horizontal">
-              @csrf
-              <input type="hidden" id="event_id" name="event_id" value="{{ $event->event_id }}">
-              <input type="hidden" id="contingent_id" name="contingent_id" value="{{ $contingent->contingent_id }}">
-              <input type="hidden" id="amount" name="amount" value="{{ $totalPayment }}">
-              <input type="hidden" id="status" name="status" value="Pending">
-
-                <div class="form-group float-right">
-                  <div class="input-group  @error('payment_proof') is-invalid @enderror">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input @error('payment_proof') is-invalid @enderror" id="inputGroupFile04" name="payment_proof" aria-describedby="inputGroupFileAddon04">
-                      <label class="custom-file-label" for="inputGroupFile04">Bukti Transfer</label>
-                    </div>
-                    <div class="input-group-append">
-                      <button class="btn btn-success" type="submit" name="submit" id="inputGroupFileAddon04"><i class="far fa-credit-card"></i> Kirim Pembayaran</button>
-                    </div>
-                  </div>
-                  @error('payment_proof')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-                </div>
-            </form>
-          </div>
-        </div>
-        @endif
         
       </div>
 
@@ -207,11 +188,10 @@
 
           </div>
         </div>
-        @if ($payment->status == 'Pending')
         <div class="col-xl-8">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Persetujuan Pembayaran</h3>
+              <h3 class="card-title">Detail Pembayaran</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -255,6 +235,7 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
                 </div>
+                @if ($payment->status == 'Pending')
                 <div class=" form-group">
                   <label for="status" class="form-label">Status Pembayaran <span class="text-danger">*</span></label>
                   <select class="form-control select2bs4 @error('status') is-invalid @enderror" id="status" name="status" data-placeholder="Pilih Status">
@@ -265,18 +246,20 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
                 </div>
+                @endif
                 
                 
               </div>
               <!-- /.card-body -->
+              @if ($payment->status == 'Pending')
               <div class="card-footer">
                 <button type="submit" name="submit" class="btn btn-primary float-right">Simpan</button>
               </div>
+              @endif
               <!-- /.card-footer -->
             </form>
           </div>
         </div>
-        @endif
       </div>
 
       <!-- /.card -->

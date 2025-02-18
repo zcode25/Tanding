@@ -8,7 +8,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-12">
-            <h1>Daftar Peserta</h1>
+            <h1>Data Pendaftaran</h1>
           </div>
           {{-- <div class="col-sm-6">
             <div class="float-sm-right">
@@ -29,7 +29,7 @@
         <div class="col">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Daftar Peserta</h3>
+              <h3 class="card-title">Data Pendaftaran</h3>
     
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">

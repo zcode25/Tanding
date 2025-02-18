@@ -40,7 +40,7 @@
             <thead>
             <tr>
               <th>Nama Perlombaan</th>
-              <th>Deskripsi</th>
+              {{-- <th>Deskripsi</th> --}}
               <th>Tanggal Dibuat</th>
               <th>Status</th>
               <th>Aksi</th>
@@ -50,7 +50,7 @@
               @foreach ($events as $event)
                 <tr>
                   <td>{{ $event->event_name }}</td>
-                  <td>{{ $event->event_desc }}</td>
+                  {{-- <td>{{ $event->event_desc }}</td> --}}
                   <td>{{ $event->created_at->format('Y-m-d') }}</td>
                   <td>{{ $event->event_status }}</td>
                   <td>

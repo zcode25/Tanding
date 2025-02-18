@@ -7,8 +7,8 @@
     <section class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
-          <div class="col-sm-12">
-            <h1>Pengundian</h1>
+          <div class="col-xl-12">
+            <h1>Pengundian Peserta</h1>
           </div>
           {{-- <div class="col-sm-6">
             <div class="float-sm-right">
@@ -26,10 +26,10 @@
       
 
       <div class="row">
-        <div class="col">
+        <div class="col-xl-12">
           <div class="card">
             <div class="card-header">
-              <h3 class="card-title">Pengundian</h3>
+              <h3 class="card-title">Pengundian Peserta</h3>
     
               <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
@@ -65,15 +65,11 @@
                               <td>{{ $categoryName }}</td>
                               <td>{{ $categoryType }}</td>
                               <td>{{ $categoryAmount }}</td>
-                              @if ($categoryCount > 0)
-                                  <td class="py-0 align-middle">
-                                      <a href="/adminDraw/detail/{{ $firstCompetition->competition_id }}" class="btn btn-dark btn-sm">
-                                          Detail <i class="fa fa-eye ml-2" aria-hidden="true"></i>
-                                      </a>
-                                  </td>
-                              @else
-                                  <td></td>
-                              @endif
+                              <td class="py-0 align-middle">
+                                <a href="/adminDraw/detail/{{ $firstCompetition->competition_id }}" class="btn btn-dark btn-sm">
+                                    Detail <i class="fa fa-eye ml-2" aria-hidden="true"></i>
+                                </a>
+                              </td>
                           </tr>
                         @endif
                     @endforeach

@@ -30,7 +30,11 @@
           <div class="col-12">
             <h4>
               <i class="fas fa-globe"></i> Tanding
-              <small class="float-right">Date: {{ now()->toDateString() }}</small>
+              @if (isset($payment->status))
+                <small class="float-right">Date: {{ $payment->created_at->toDateString() }}</small>
+              @else
+                <small class="float-right">Date: {{ now()->toDateString() }}</small>
+              @endif
             </h4>
           </div>
           <!-- /.col -->
@@ -82,6 +86,7 @@
                 <th>Atlet</th>
                 <th>Kategori Pertandingan</th>
                 <th>Kategori Umur</th>
+                <th>Jenis Kelamin</th>
                 <th>Kelas</th>
                 <th>Harga</th>
               </tr>
@@ -91,16 +96,19 @@
                   <tr>
                     <td>{{ $index + 1 }}</td>
                     <td>
-                      <ul style="margin: 0; padding: 0;">
+                      <ul style="margin: 0; padding: 0; list-style-type: none;">
                         @foreach ($register->athletes as $athlete)
-                            <li>{{ $athlete->athlete_name ?? 'N/A' }} ({{ $athlete->athlete_gender }} - {{ $athlete->weight }}Kg)</li>
+                            <li style="position: relative; padding-left: 15px;">
+                                <span style="position: absolute; left: 0;">-</span> {{ $athlete->athlete_name }}
+                            </li>
                         @endforeach
                       </ul>
                     </td>
                     <td>{{ $register->category->category_name ?? 'N/A' }}</td>
                     <td>{{ $register->age->age_name ?? 'N/A' }}</td>
+                    <td>{{ $register->gender ?? 'N/A' }}</td>
                     @if (isset($register->matchClass))
-                      <td>{{ $register->matchClass->class_name }} - {{ $register->matchClass->class_min }}Kg s/d {{ $register->matchClass->class_max }}Kg ({{ $register->matchClass->class_gender }})</td>
+                      <td>{{ $register->matchClass->class_name }} ({{ $register->matchClass->class_min }}Kg s/d {{ $register->matchClass->class_max }}Kg)</td>
                     @else
                       <td>-</td>
                     @endif
@@ -151,6 +159,9 @@
                 </tr>
               </table>
             </div>
+          </div>
+          <div class="col-12 text-right p-3">
+            <a href="/userEvent/register/payment/invoice/{{ $event->event_id }}" target="_blank" class="btn btn-success">Cetak Invoice</a>
           </div>
           <!-- /.col -->
         </div>

@@ -58,7 +58,7 @@
 
                   <hr>
                   @if (count($documents) > 0)
-                  <table class="table table-sm">
+                  <table class="table table-hover">
                     <thead>
                       <tr>
                         <th>No</th>
@@ -75,8 +75,8 @@
                         <td>{{ $i++ }}</td>
                         <td>{{ $document->document_name }}</td>
                         <td>
-                          <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-primary btn-sm"><i class="fa fa-download" aria-hidden="true"></i></a>
-                          <a href="/adminEvent/document/destroy/{{ $document->document_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                          <a href="{{ asset('storage/' . $document->document) }}" target="_blank" class="btn btn-primary btn-sm">Download<i class="fa fa-download ml-2" aria-hidden="true"></i></a>
+                          <a href="/adminEvent/document/destroy/{{ $document->document_id }}" class="btn btn-danger btn-sm" data-confirm-delete="true">Hapus<i class="fa fa-trash ml-2" aria-hidden="true"></i></a>
                         </td>
                       </tr>
                       @endforeach
